@@ -1,5 +1,5 @@
-import { Inter } from "next/font/google";
-const font = Inter({ subsets: ["latin"] });
+import { Plus_Jakarta_Sans} from "next/font/google";
+const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export default function Home() {
 
@@ -7,6 +7,7 @@ export default function Home() {
     <main
       className={`${font.className}`}
     >
+      <h1 className="heading-xl">Heading (XL)</h1>
     </main>
   );
 }
