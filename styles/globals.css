@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.heading-xl{
+  @apply font-bold text-2xl leading-[30px]
+}
+
+.heading-l{
+  @apply font-bold text-[18px] leading-[23px]
+}
+
+.heading-m{
+  @apply font-bold text-[15px] leading-[19px]
+}
+
+.heading-s{
+  @apply font-bold text-xs leading-[15px]
+}
+
+.body-l{
+  @apply font-medium text-[13px] leading-[23px]
+}
+
+.body-m{
+  @apply font-bold text-[12px] leading-[15px]
+}
