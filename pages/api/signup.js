@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     await connectDB();
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         .json({ message: "An user with this email already exists." });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ email, password: hashedPassword });
+    const newUser = await User.create({firstName, lastName, email, password: hashedPassword });
 
     return res.status(201).json({ user: newUser });
   } catch (error) {

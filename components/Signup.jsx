@@ -7,6 +7,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { IoPersonSharp } from "react-icons/io5";
+
 import { Form } from "@/components/ui/form";
 
 import { toast } from "sonner";
@@ -16,6 +18,8 @@ import Link from 'next/link'
 
 const formSchema = z
   .object({
+    firstName: z.string().min(1, {message: "Can't be empty"}),
+    lastName: z.string().min(1, {message: "Can't be empty"}),
     email: z
       .string()
       .min(1, { message: "Can't be empty" })
@@ -37,6 +41,7 @@ export default function Signup() {
 
   async function onSubmit(values) {
     try {
+      console.log(values)
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: {
@@ -83,6 +88,24 @@ export default function Signup() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-6 mt-10 flex flex-col"
         >
+          <Input
+            type={"text"}
+            id={"firstName"}
+            label={"First Name"}
+            placeholder={"John"}
+            control={form.control}
+          >
+            <IoPersonSharp className="text-[#737373] text-sm"/>
+          </Input>
+          <Input
+            type={"text"}
+            id={"lastName"}
+            label={"Last Name"}
+            placeholder={"Doe"}
+            control={form.control}
+          >
+            <IoPersonSharp className="text-[#737373] text-sm"/>
+          </Input>
           <Input
             type={"email"}
             id={"email"}

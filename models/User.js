@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Board from "./Board";
 
 const userSchema = mongoose.Schema(
   {
@@ -19,7 +20,7 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     boards: [{
-      type: mongoose.Schema.types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Board"
     }]
   },

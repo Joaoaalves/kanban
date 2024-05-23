@@ -25,3 +25,11 @@
 .body-m{
   @apply font-bold md:text-[12px] leading-[15px] text-[10px]
 }
+
+.switch span{
+  background-color: white!important;
+}
+
+.purple-filter{
+  filter: brightness(0) saturate(100%) invert(41%) sepia(44%) saturate(839%) hue-rotate(203deg) brightness(89%) contrast(90%);
+}
