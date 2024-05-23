@@ -90,7 +90,7 @@ export default function Signup() {
             placeholder={"e.g. alex@email.com"}
             control={form.control}
           >
-            <Image src={"/images/icon-email.svg"} width={13} height={10} alt="Email Icon"/>
+            <Image src={"/images/icon-email.svg"} width={13} height={10} alt="Email Icon" priority/>
           </Input>
           <Input
             type={"password"}
@@ -98,7 +98,7 @@ export default function Signup() {
             label={"Create password"}
             placeholder={"At least 8 characters"}
           >
-            <Image src={"/images/icon-password.svg"} width={13} height={10} alt="Password Icon"/>
+            <Image src={"/images/icon-password.svg"} width={13} height={10} alt="Password Icon" priority/>
           </Input>
           <Input
             type={"password"}
@@ -106,7 +106,7 @@ export default function Signup() {
             label={"Confirm password"}
             placeholder={"At least 8 characters"}
           >
-            <Image src={"/images/icon-password.svg"} width={13} height={10} alt="Password Icon"/>
+            <Image src={"/images/icon-password.svg"} width={13} height={10} alt="Password Icon" priority/>
           </Input>
 
           <p className="text-xs text-dark-gray">
@@ -116,7 +116,7 @@ export default function Signup() {
           <SubmitButton text={'Submit'}/>
           <p className="text-dark-gray text-xs text-center xl:text-md">
             Already have an account?{" "}
-            <Link className="text-primary cursor-pointer font-bold" href="/">
+            <Link className="text-purple cursor-pointer font-bold" href="/">
               Login
             </Link>
           </p>

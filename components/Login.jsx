@@ -86,7 +86,7 @@ export default function Login() {
           <SubmitButton text={'Submit'}/>
           <p className="text-dark-gray text-xs text-center xl:text-md">
             Don’t have an account?{" "}
-            <Link className="text-primary cursor-pointer font-bold" href="/signup">
+            <Link className="text-purple cursor-pointer font-bold" href="/signup">
               Create account
             </Link>
           </p>

@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 .heading-xl{
-  @apply font-bold text-2xl leading-[30px]
+  @apply font-bold md:text-2xl leading-[30px] text-xl
 }
 
 .heading-l{
-  @apply font-bold text-[18px] leading-[23px]
+  @apply font-bold md:text-[18px] leading-[23px] text-[14px]
 }
 
 .heading-m{
-  @apply font-bold text-[15px] leading-[19px]
+  @apply font-bold md:text-[15px] leading-[19px] text-[12px]
 }
 
 .heading-s{
-  @apply font-bold text-xs leading-[15px]
+  @apply font-bold md:text-xs leading-[15px] text-[10px]
 }
 
 .body-l{
-  @apply font-medium text-[13px] leading-[23px]
+  @apply font-medium md:text-[13px] leading-[23px] text-xs
 }
 
 .body-m{
-  @apply font-bold text-[12px] leading-[15px]
+  @apply font-bold md:text-[12px] leading-[15px] text-[10px]
 }
