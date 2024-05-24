@@ -38,7 +38,8 @@ export const BoardsProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        getBoards();
+        if(boards.length === 0)
+            getBoards();
     }, []);
 
     return (

@@ -61,7 +61,7 @@ const authOptions = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/dashboard",
+    signIn: "/boards",
     newUser: "/",
     error: "/",
   },

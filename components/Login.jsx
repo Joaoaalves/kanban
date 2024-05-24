@@ -41,7 +41,7 @@ export default function Login() {
       const res = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/dashboard",
+        callbackUrl: "/boards",
       });
     } catch (error) {
       console.error("Sign-in error:", error);
