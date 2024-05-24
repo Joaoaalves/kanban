@@ -61,7 +61,7 @@ const authOptions = NextAuth({
     }),
   ],
   pages: {
-    signIn: "/",
+    signIn: "/dashboard",
     newUser: "/",
     error: "/",
   },
@@ -69,7 +69,7 @@ const authOptions = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.user = {
-          _id: user._id,
+          _id: `${user._id}`,
           email: user.email,
         };
       }

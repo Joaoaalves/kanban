@@ -8,7 +8,11 @@ const boardSchema = new mongoose.Schema({
     columns: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Column'
-    }]
+    }],
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, {
     timestamps: true
 });

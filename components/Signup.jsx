@@ -41,7 +41,6 @@ export default function Signup() {
 
   async function onSubmit(values) {
     try {
-      console.log(values)
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: {
