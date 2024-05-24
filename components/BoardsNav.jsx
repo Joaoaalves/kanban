@@ -2,20 +2,11 @@
 import Image from "next/image"
 import ItemNav from "./ItemNav"
 import { NewBoardDialog } from "./NewBoardDialog"
-import {useState, useEffect} from 'react'
+import { useBoards } from "@/contexts/BoardsProvider"
 
 export default function BoardsNav(){    
-    const [boards, setBoards] = useState([])
-    useEffect(() => {
-        const fetchBoards = async () => {
-            const res = await fetch('/api/board')
-            const data = await res.json()
-            setBoards(data?.boards)
-        }
-
-        fetchBoards()
-    }, [])
-
+    const {boards} = useBoards()
+    
     return (
         <div className="flex flex-col self-start w-full pe-6">
             <span className="text-[12px] text-medium-grey ms-8 font-bold mb-5">ALL BOARDS ({boards.length})</span>

@@ -3,8 +3,10 @@ import { object, string } from 'zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { FaTimes } from "react-icons/fa";
 import { v4 as uuidv4 } from 'uuid';
+import { useBoards } from '@/contexts/BoardsProvider';
 
 export default function NewBoardForm() {
+  const {addBoard} = useBoards()
   const [columns, setColumns] = useState([{ id: uuidv4(), name: '' }]);
   const boardSchema = object({
     name: string().min(3),
@@ -33,26 +35,7 @@ export default function NewBoardForm() {
   };
 
   const onSubmit = async (data) => {
-    try {
-      const validatedData = boardSchema.parse(data);
-      console.log('Dados válidos:', validatedData);
-
-      const response = await fetch('/api/board', {
-        method: 'POST',
-        body: JSON.stringify(validatedData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        console.log('Quadro criado com sucesso!');
-      } else {
-        console.error('Erro ao criar o quadro.');
-      }
-    } catch (error) {
-      console.error('Erro de validação:', error.errors);
-    }
+    addBoard(data)
   };
 
   return (
