@@ -13,7 +13,7 @@ export function NewBoardDialog({children}){
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
         <DialogHeader>
           <DialogTitle>Add New Board</DialogTitle>
         </DialogHeader>

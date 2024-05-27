@@ -14,7 +14,7 @@ export default function SidePanel(){
 
     return (
         <>
-        <aside className={`hidden md:flex bg-white dark:bg-dark-grey h-screen w-60 lg:w-80 ${isOpen ? '' : '-translate-x-full'} flex-col items-center py-8 transition-all duration-500 z-20`}>
+        <aside className={`hidden md:flex bg-white dark:bg-dark-grey h-screen min-w-60 lg:min-w-80 ${isOpen ? '' : '-translate-x-full'} flex-col items-center py-8 transition-all duration-500 z-20`}>
             <Image src={'/images/logo-dark.svg'} width={150} height={26} className="mb-14"/>
             <BoardsNav />
             <ThemeToggle />

@@ -20,6 +20,10 @@ export const BoardsProvider = ({ children }) => {
         }
     };
 
+    const getBoard = (boardId) => {
+        return boards.find(board => board._id === boardId);
+    };
+
     async function addBoard(board){
         try {
             fetch('/api/board', {
@@ -43,7 +47,7 @@ export const BoardsProvider = ({ children }) => {
     }, []);
 
     return (
-        <BoardsContext.Provider value={{ boards, addBoard }}>
+        <BoardsContext.Provider value={{ boards, addBoard, getBoard }}>
             {children}
         </BoardsContext.Provider>
     );

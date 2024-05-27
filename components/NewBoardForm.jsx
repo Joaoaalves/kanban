@@ -41,13 +41,13 @@ export default function NewBoardForm() {
   return (
     <form className="flex flex-col w-full gap-y-6" onSubmit={handleSubmit(onSubmit)}>
       <fieldset>
-        <label htmlFor="board-name" className="text-medium-grey text-xs font-bold mb-2">
+        <label htmlFor="board-name" className="text-medium-grey text-xs font-bold dark:text-white mb-2">
           Board Name
         </label>
         <input
           type="text"
           id="board-name"
-          className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded"
+          className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
           placeholder="e.g. Web Design"
           {...register('name', { required: true })}
         />
@@ -55,14 +55,14 @@ export default function NewBoardForm() {
       </fieldset>
 
       <fieldset>
-        <label htmlFor="board-columns" className="text-medium-grey text-xs font-bold mb-2">
+        <label htmlFor="board-columns" className="text-medium-grey text-xs font-bold dark:text-white mb-2">
           Board Columns
         </label>
         {fields.map((field, index) => (
           <div key={field.id} className="w-full flex items-center justify-between mb-3">
             <input
               type="text"
-              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded"
+              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
               placeholder="e.g. Todo"
               {...register(`columns.${index}.name`, { required: true })}
             />
@@ -74,7 +74,7 @@ export default function NewBoardForm() {
         <button
           type="button"
           onClick={addColumn}
-          className="py-2 rounded-full w-full bg-light-purple/10 text-purple hover:bg-purple hover:text-white transition-all duration-300 font-bold"
+          className="py-2 rounded-full w-full bg-light-purple/10 text-purple hover:bg-purple hover:text-white dark:bg-light-bg transition-all duration-300 font-bold"
         >
           + Add New Column
         </button>
