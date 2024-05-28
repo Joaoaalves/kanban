@@ -1,53 +1,81 @@
 import { createContext, useEffect, useState, useContext } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getBoards, createBoard } from "@/data/boards";
+import { createTask } from "@/data/tasks";
 
 export const BoardsContext = createContext();
 
 export const BoardsProvider = ({ children }) => {
-    const [boards, setBoards] = useState([]);
+    const queryClient = useQueryClient();
 
-    const getBoards = async () => {
-        try {
-            const res = await fetch('/api/board', {
-                cache: 'force-cache'
+    const { data: boards } = useQuery({
+        queryFn: getBoards,
+        queryKey: ['boards']
+    });
+
+    const { mutateAsync: createBoardFn } = useMutation({
+        mutationFn: createBoard,
+        onSuccess: (_, variables, context) => {
+            queryClient.setQueryData(['boards'], data => {
+                return [...data, {
+                    ...variables,
+                    tasks: [], // Adiciona uma propriedade `tasks` vazia ao novo board
+                    columns: [] // Adiciona uma propriedade `columns` vazia ao novo board, se necessário
+                }];
             });
-            const data = await res.json();
-
-            if (data?.boards) {
-                setBoards(data.boards);
-            }
-        } catch (error) {
-            console.error("Failed to fetch boards:", error);
         }
-    };
+    });
+
+    const { mutateAsync: createTaskFn } = useMutation({
+        mutationFn: async ({ task, boardId }) => {
+            await createTask(task, boardId);
+            return { task, boardId };
+        },
+        onSuccess: ({ task, boardId }) => {
+            queryClient.setQueryData(['boards'], boards => {
+                return boards.map(board => {
+                    if (board._id === boardId) {
+                        return {
+                            ...board,
+                            columns: board.columns.map(column => {
+                                if (column._id === task.status) {
+                                    return {
+                                        ...column,
+                                        tasks: [...column.tasks, task]
+                                    };
+                                }
+                                return column;
+                            })
+                        };
+                    }
+                    return board;
+                });
+            });
+        }
+    });
 
     const getBoard = (boardId) => {
-        return boards.find(board => board._id === boardId);
+        return boards?.find(board => board._id === boardId);
     };
 
-    async function addBoard(board){
+    const handleCreateBoard = async (board) => {
         try {
-            fetch('/api/board', {
-                method: 'POST',
-                body: JSON.stringify(board),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-            }).then((res) => {
-                setBoards([...boards, board])
-            })
-
-        } catch (error) {
-            console.error(error);
+            await createBoardFn(board);
+        } catch (err) {
+            console.log(err);
         }
-    }
+    };
 
-    useEffect(() => {
-        if(boards.length === 0)
-            getBoards();
-    }, []);
+    const handleCreateTask = async (task, boardId) => {
+        try {
+            await createTaskFn({ task, boardId });
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return (
-        <BoardsContext.Provider value={{ boards, addBoard, getBoard }}>
+        <BoardsContext.Provider value={{ boards, handleCreateBoard, getBoard, handleCreateTask }}>
             {children}
         </BoardsContext.Provider>
     );

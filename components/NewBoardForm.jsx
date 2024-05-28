@@ -6,8 +6,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { useBoards } from '@/contexts/BoardsProvider';
 
 export default function NewBoardForm() {
-  const {addBoard} = useBoards()
+  const {handleCreateBoard} = useBoards()
   const [columns, setColumns] = useState([{ id: uuidv4(), name: '' }]);
+
   const boardSchema = object({
     name: string().min(3),
     columns: object({
@@ -35,7 +36,7 @@ export default function NewBoardForm() {
   };
 
   const onSubmit = async (data) => {
-    addBoard(data)
+    handleCreateBoard(data)
   };
 
   return (

@@ -9,10 +9,10 @@ const taskSchema = new mongoose.Schema({
         type: String
     },
     status: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Column'
     },
-    subtasks: [{
+    subTasks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subtask'
     }]

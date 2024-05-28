@@ -7,6 +7,7 @@ const subtaskSchema = new mongoose.Schema({
     },
     isCompleted: {
         type: Boolean,
+        default: false,
         default: false
     }
 }, {

@@ -6,6 +6,7 @@ import { BoardsProvider } from "@/contexts/BoardsProvider";
 
 import Board from "@/components/Board";
 import SidePanel from "@/components/SidePanel";
+import TopBar from "@/components/TopBar";
 
 export default function Page(){
     const router = useRouter();
@@ -17,11 +18,14 @@ export default function Page(){
 
     return (
         <main
-        className={`bg-light-bg dark:bg-dark-bg flex items-center gap-y-8 gap-x-8 h-screen w-screen ${font.className}`}
+        className={`bg-light-bg dark:bg-dark-bg flex items-start gap-y-8 h-screen w-screen ${font.className}`}
         >
             <BoardsProvider>
               <SidePanel />
-              <Board boardId={boardId} />
+              <div className="w-full h-screen flex flex-col">
+                <TopBar boardId={boardId} />
+                <Board boardId={boardId} />
+              </div>
             </BoardsProvider>
           </main>
     )

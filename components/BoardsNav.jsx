@@ -10,10 +10,10 @@ export default function BoardsNav(){
 
     return (
         <div className="flex flex-col self-start w-full pe-6">
-            <span className="text-[12px] text-medium-grey ms-8 font-bold mb-5">ALL BOARDS ({boards.length})</span>
+            <span className="text-[12px] text-medium-grey ms-8 font-bold mb-5">ALL BOARDS ({boards?.length})</span>
 
             <nav className="flex flex-col items-start w-full">
-                {boards && boards.map(board => (
+                {boards?.map(board => (
                     <BoardLink key={board._id} board={board} isActive={board._id === 1}/>
                 ))}
                 <NewBoardDialog>

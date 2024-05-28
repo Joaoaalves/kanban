@@ -14,8 +14,8 @@ export default function SidePanel(){
 
     return (
         <>
-        <aside className={`hidden md:flex bg-white dark:bg-dark-grey h-screen min-w-60 lg:min-w-80 ${isOpen ? '' : '-translate-x-full'} flex-col items-center py-8 transition-all duration-500 z-20`}>
-            <Image src={'/images/logo-dark.svg'} width={150} height={26} className="mb-14"/>
+        <aside className={`hidden border-r-2 light:border-light-lines dark:border-dark-lines md:flex bg-white dark:bg-dark-grey h-screen min-w-60 lg:min-w-80 ${isOpen ? '' : '!hidden'} flex-col items-center py-8 transition-all duration-500 z-20`}>
+            <Image src={'/images/logo-dark.svg'} alt='Logo-kan-ban' width={150} height={26} className="mb-14"/>
             <BoardsNav />
             <ThemeToggle />
             <ItemNav onClick={toggleSidePanel}>
