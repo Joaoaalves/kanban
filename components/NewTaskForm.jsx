@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { object, string } from 'zod';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useState } from "react";
+import { object, string } from "zod";
+import { useForm, useFieldArray } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
-import { v4 as uuidv4 } from 'uuid';
-import { useBoards } from '@/contexts/BoardsProvider';
+import { v4 as uuidv4 } from "uuid";
+import { useBoards } from "@/contexts/BoardsProvider";
 
 export default function NewTaskForm({ board }) {
   const { getBoard, handleCreateTask } = useBoards();
-  const columnIds = board ? board.columns.map(column => column._id) : [];
+  const columnIds = board ? board.columns.map((column) => column._id) : [];
 
   const boardSchema = object({
     title: string().min(3),
     description: string().min(10),
-    status: string().refine(value => columnIds.includes(value), {
+    status: string().refine((value) => columnIds.includes(value), {
       message: "Invalid status ID",
     }),
     subTasks: object({
@@ -20,22 +20,27 @@ export default function NewTaskForm({ board }) {
     }).array(),
   });
 
-  const { register, handleSubmit, control, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      title: '',
-      description: '',
-      status: columnIds.length > 0 ? columnIds[0] : '',
-      subTasks: [{ id: uuidv4(), title: '' }],
+      title: "",
+      description: "",
+      status: columnIds.length > 0 ? columnIds[0] : "",
+      subTasks: [{ id: uuidv4(), title: "" }],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'subTasks',
+    name: "subTasks",
   });
 
   const addSubtask = () => {
-    append({ id: uuidv4(), title: '' });
+    append({ id: uuidv4(), title: "" });
   };
 
   const removeSubtask = (index) => {
@@ -47,9 +52,15 @@ export default function NewTaskForm({ board }) {
   };
 
   return (
-    <form className="flex flex-col w-full gap-y-6" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex flex-col w-full gap-y-6"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <fieldset>
-        <label htmlFor="task-title" className="text-medium-grey text-xs font-bold dark:text-white mb-2">
+        <label
+          htmlFor="task-title"
+          className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+        >
           Title
         </label>
         <input
@@ -57,12 +68,17 @@ export default function NewTaskForm({ board }) {
           id="task-title"
           className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
           placeholder="e.g. Take coffee break"
-          {...register('title', { required: true })}
+          {...register("title", { required: true })}
         />
-        {errors.title && <span className="text-red-500">Task title is required</span>}
+        {errors.title && (
+          <span className="text-red-500">Task title is required</span>
+        )}
       </fieldset>
       <fieldset>
-        <label htmlFor="task-description" className="text-medium-grey text-xs font-bold dark:text-white mb-2">
+        <label
+          htmlFor="task-description"
+          className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+        >
           Description
         </label>
         <input
@@ -70,17 +86,25 @@ export default function NewTaskForm({ board }) {
           id="task-description"
           className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
           placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
-          {...register('description', { required: true })}
+          {...register("description", { required: true })}
         />
-        {errors.description && <span className="text-red-500">Task description is required</span>}
+        {errors.description && (
+          <span className="text-red-500">Task description is required</span>
+        )}
       </fieldset>
 
       <fieldset>
-        <label htmlFor="task-subtasks" className="text-medium-grey text-xs font-bold dark:text-white mb-2">
+        <label
+          htmlFor="task-subtasks"
+          className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+        >
           Subtasks
         </label>
         {fields.map((field, index) => (
-          <div key={field.id} className="w-full flex items-center justify-between mb-3">
+          <div
+            key={field.id}
+            className="w-full flex items-center justify-between mb-3"
+          >
             <input
               type="text"
               className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
@@ -102,19 +126,28 @@ export default function NewTaskForm({ board }) {
       </fieldset>
 
       <fieldset>
-        <label htmlFor="task-status" className="text-medium-grey text-xs font-bold dark:text-white mb-2">
+        <label
+          htmlFor="task-status"
+          className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+        >
           Status
         </label>
         <select
           id="task-status"
           className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
-          {...register('status', { required: true })}
+          {...register("status", { required: true })}
         >
-          {board && board.columns && board.columns.map(column => (
-            <option value={column._id} key={`status-${column._id}`}>{column.name}</option>
-          ))}
+          {board &&
+            board.columns &&
+            board.columns.map((column) => (
+              <option value={column._id} key={`status-${column._id}`}>
+                {column.name}
+              </option>
+            ))}
         </select>
-        {errors.status && <span className="text-red-500">Task status is required</span>}
+        {errors.status && (
+          <span className="text-red-500">Task status is required</span>
+        )}
       </fieldset>
       <input
         type="submit"

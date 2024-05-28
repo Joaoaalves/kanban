@@ -2,39 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-.heading-xl{
-  @apply font-bold md:text-2xl leading-[30px] text-xl
+.heading-xl {
+  @apply font-bold md:text-2xl leading-[30px] text-xl;
 }
 
-.heading-l{
-  @apply font-bold md:text-[18px] leading-[23px] text-[14px]
+.heading-l {
+  @apply font-bold md:text-[18px] leading-[23px] text-[14px];
 }
 
-.heading-m{
-  @apply font-bold md:text-[15px] leading-[19px] text-[12px]
+.heading-m {
+  @apply font-bold md:text-[15px] leading-[19px] text-[12px];
 }
 
-.heading-s{
-  @apply font-bold md:text-xs leading-[15px] text-[10px]
+.heading-s {
+  @apply font-bold md:text-xs leading-[15px] text-[10px];
 }
 
-.body-l{
-  @apply font-medium md:text-[13px] leading-[23px] text-xs
+.body-l {
+  @apply font-medium md:text-[13px] leading-[23px] text-xs;
 }
 
-.body-m{
-  @apply font-bold md:text-[12px] leading-[15px] text-[10px]
+.body-m {
+  @apply font-bold md:text-[12px] leading-[15px] text-[10px];
 }
 
-.switch span{
-  background-color: white!important;
+.switch span {
+  background-color: white !important;
 }
 
-.purple-filter{
-  filter: brightness(0) saturate(100%) invert(41%) sepia(44%) saturate(839%) hue-rotate(203deg) brightness(89%) contrast(90%);
+.purple-filter {
+  filter: brightness(0) saturate(100%) invert(41%) sepia(44%) saturate(839%)
+    hue-rotate(203deg) brightness(89%) contrast(90%);
 }
 
 /* ShadCN Dialog Close Button */
-button.absolute.right-4{
+button.absolute.right-4 {
   display: none;
 }

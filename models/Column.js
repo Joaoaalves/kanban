@@ -1,16 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const columnSchema = new mongoose.Schema({
+const columnSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
-    tasks: [{
+    tasks: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Task'
-    }]
-}, {
-    timestamps: true
-});
+        ref: "Task",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  },
+);
 
-export default mongoose.models.Column || mongoose.model("Column", columnSchema)
+export default mongoose.models.Column || mongoose.model("Column", columnSchema);

@@ -5,10 +5,10 @@ const userSchema = mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true
+      required: true,
     },
     lastName: {
-      type: String
+      type: String,
     },
     email: {
       type: String,
@@ -19,10 +19,12 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    boards: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Board"
-    }]
+    boards: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Board",
+      },
+    ],
   },
   {
     timestamps: true,

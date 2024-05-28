@@ -6,8 +6,7 @@ import bcrypt from "bcryptjs";
 import User from "@/models/User";
 import { connectDB } from "@/lib/connectDB";
 
-if(!process.env.NEXTAUTH_SECRET)
-  throw("You need to provide NEXTAUTH_secret.")
+if (!process.env.NEXTAUTH_SECRET) throw "You need to provide NEXTAUTH_secret.";
 
 const authOptions = NextAuth({
   adapter: MongoDBAdapter(clientPromise),

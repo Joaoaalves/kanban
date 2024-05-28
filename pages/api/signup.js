@@ -19,7 +19,12 @@ export default async function handler(req, res) {
         .json({ message: "An user with this email already exists." });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({firstName, lastName, email, password: hashedPassword });
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
 
     return res.status(201).json({ user: newUser });
   } catch (error) {

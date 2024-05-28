@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pretty": "prettier --check --ignore-path .gitignore .",
+    "pretty:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.1.0",
@@ -28,6 +30,7 @@
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
+    "prettier": "^3.2.5",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18",

@@ -14,12 +14,12 @@ import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/router";
 
-import Link from 'next/link'
+import Link from "next/link";
 
 const formSchema = z
   .object({
-    firstName: z.string().min(1, {message: "Can't be empty"}),
-    lastName: z.string().min(1, {message: "Can't be empty"}),
+    firstName: z.string().min(1, { message: "Can't be empty" }),
+    lastName: z.string().min(1, { message: "Can't be empty" }),
     email: z
       .string()
       .min(1, { message: "Can't be empty" })
@@ -94,7 +94,7 @@ export default function Signup() {
             placeholder={"John"}
             control={form.control}
           >
-            <IoPersonSharp className="text-[#737373] text-sm"/>
+            <IoPersonSharp className="text-[#737373] text-sm" />
           </Input>
           <Input
             type={"text"}
@@ -103,7 +103,7 @@ export default function Signup() {
             placeholder={"Doe"}
             control={form.control}
           >
-            <IoPersonSharp className="text-[#737373] text-sm"/>
+            <IoPersonSharp className="text-[#737373] text-sm" />
           </Input>
           <Input
             type={"email"}
@@ -112,7 +112,13 @@ export default function Signup() {
             placeholder={"e.g. alex@email.com"}
             control={form.control}
           >
-            <Image src={"/images/icon-email.svg"} width={13} height={10} alt="Email Icon" priority/>
+            <Image
+              src={"/images/icon-email.svg"}
+              width={13}
+              height={10}
+              alt="Email Icon"
+              priority
+            />
           </Input>
           <Input
             type={"password"}
@@ -120,7 +126,13 @@ export default function Signup() {
             label={"Create password"}
             placeholder={"At least 8 characters"}
           >
-            <Image src={"/images/icon-password.svg"} width={13} height={10} alt="Password Icon" priority/>
+            <Image
+              src={"/images/icon-password.svg"}
+              width={13}
+              height={10}
+              alt="Password Icon"
+              priority
+            />
           </Input>
           <Input
             type={"password"}
@@ -128,14 +140,20 @@ export default function Signup() {
             label={"Confirm password"}
             placeholder={"At least 8 characters"}
           >
-            <Image src={"/images/icon-password.svg"} width={13} height={10} alt="Password Icon" priority/>
+            <Image
+              src={"/images/icon-password.svg"}
+              width={13}
+              height={10}
+              alt="Password Icon"
+              priority
+            />
           </Input>
 
           <p className="text-xs text-dark-gray">
             Password must contain at least 8 characters
           </p>
 
-          <SubmitButton text={'Submit'}/>
+          <SubmitButton text={"Submit"} />
           <p className="text-dark-gray text-xs text-center xl:text-md">
             Already have an account?{" "}
             <Link className="text-purple cursor-pointer font-bold" href="/">

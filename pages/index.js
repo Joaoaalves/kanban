@@ -1,4 +1,4 @@
-import { Plus_Jakarta_Sans} from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 import Login from "@/components/Login";
@@ -9,7 +9,12 @@ export default function Home() {
     <main
       className={`bg-light-bg dark:bg-dark-bg flex flex-col gap-y-8 items-center justify-center h-screen ${font.className}`}
     >
-      <Image src={'/images/logo-dark.svg'} width={200} height={34} alt="Logo Kanban"/>
+      <Image
+        src={"/images/logo-dark.svg"}
+        width={200}
+        height={34}
+        alt="Logo Kanban"
+      />
       <Login />
     </main>
   );

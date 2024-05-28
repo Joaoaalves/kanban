@@ -14,7 +14,7 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 
 import { useRouter } from "next/router";
-import Link from 'next/link'
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z
@@ -72,7 +72,12 @@ export default function Login() {
             placeholder={"e.g. alex@email.com"}
             control={form.control}
           >
-            <Image src={"/images/icon-email.svg"} width={13} height={10} alt="Email Icon"/>
+            <Image
+              src={"/images/icon-email.svg"}
+              width={13}
+              height={10}
+              alt="Email Icon"
+            />
           </Input>
           <Input
             type={"password"}
@@ -80,13 +85,21 @@ export default function Login() {
             label={"Password"}
             placeholder={"Enter your password"}
           >
-            <Image src={"/images/icon-password.svg"} width={13} height={10} alt="Password Icon"/>
+            <Image
+              src={"/images/icon-password.svg"}
+              width={13}
+              height={10}
+              alt="Password Icon"
+            />
           </Input>
-        
-          <SubmitButton text={'Submit'}/>
+
+          <SubmitButton text={"Submit"} />
           <p className="text-dark-gray text-xs text-center xl:text-md">
             Don’t have an account?{" "}
-            <Link className="text-purple cursor-pointer font-bold" href="/signup">
+            <Link
+              className="text-purple cursor-pointer font-bold"
+              href="/signup"
+            >
               Create account
             </Link>
           </p>
