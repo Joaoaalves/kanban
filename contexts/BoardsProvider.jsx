@@ -1,9 +1,10 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import { createContext, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getBoards,
   createBoard,
   updateBoard,
+  createColumn,
   updateBoardColumns,
 } from "@/data/boards";
 import { createTask } from "@/data/tasks";
@@ -29,6 +30,29 @@ export const BoardsProvider = ({ children }) => {
       });
     },
   });
+
+  const {mutateAsync: createColumnFn } = useMutation({
+    mutationFn: async ({column, boardId}) => {
+      const createdColumn = await createColumn(column, boardId);
+      return {createdColumn, boardId}
+    },
+    onSuccess: ({createdColumn, boardId}) => {
+      if(!createdColumn)
+        return
+      
+      queryClient.setQueryData(["boards"], (boards) => {
+        return boards.map((board) => {
+          if(board._id === boardId) {
+            return {
+              ...board,
+              columns: [...board.columns, createdColumn]
+            }
+          }
+          return board
+        })
+      })
+    }
+  })
 
   const { mutateAsync: createTaskFn } = useMutation({
     mutationFn: async ({ task, boardId }) => {
@@ -180,6 +204,14 @@ export const BoardsProvider = ({ children }) => {
     }
   };
 
+  const handleCreateColumn = async (column, boardId) => {
+    try {
+      await createColumnFn({column, boardId})
+    }catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <BoardsContext.Provider
       value={{
@@ -187,6 +219,7 @@ export const BoardsProvider = ({ children }) => {
         handleCreateBoard,
         getBoard,
         handleCreateTask,
+        handleCreateColumn,
         handleMoveTask,
         handleMoveColumn,
       }}
