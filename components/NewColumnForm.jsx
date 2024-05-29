@@ -2,7 +2,7 @@ import { object, string } from "zod";
 import { useForm } from "react-hook-form";
 import { useBoards } from "@/contexts/BoardsProvider";
 
-export default function NewBoardForm({boardId}) {
+export default function NewBoardForm({  boardId, column }) {
   const { handleCreateColumn } = useBoards();
 
   const columnSchema = object({
@@ -15,7 +15,7 @@ export default function NewBoardForm({boardId}) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
+      name: column?.name || "",
     },
   });
 

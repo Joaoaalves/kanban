@@ -31,28 +31,27 @@ export const BoardsProvider = ({ children }) => {
     },
   });
 
-  const {mutateAsync: createColumnFn } = useMutation({
-    mutationFn: async ({column, boardId}) => {
+  const { mutateAsync: createColumnFn } = useMutation({
+    mutationFn: async ({ column, boardId }) => {
       const createdColumn = await createColumn(column, boardId);
-      return {createdColumn, boardId}
+      return { createdColumn, boardId };
     },
-    onSuccess: ({createdColumn, boardId}) => {
-      if(!createdColumn)
-        return
-      
+    onSuccess: ({ createdColumn, boardId }) => {
+      if (!createdColumn) return;
+
       queryClient.setQueryData(["boards"], (boards) => {
         return boards.map((board) => {
-          if(board._id === boardId) {
+          if (board._id === boardId) {
             return {
               ...board,
-              columns: [...board.columns, createdColumn]
-            }
+              columns: [...board.columns, createdColumn],
+            };
           }
-          return board
-        })
-      })
-    }
-  })
+          return board;
+        });
+      });
+    },
+  });
 
   const { mutateAsync: createTaskFn } = useMutation({
     mutationFn: async ({ task, boardId }) => {
@@ -163,7 +162,7 @@ export const BoardsProvider = ({ children }) => {
     if (!destination) return;
 
     const board = boards.find((board) => board._id === source.droppableId);
-    console.log(source.droppableId)
+    console.log(source.droppableId);
     if (!board) return;
 
     const newColumns = Array.from(board.columns);
@@ -172,10 +171,8 @@ export const BoardsProvider = ({ children }) => {
 
     queryClient.setQueryData(["boards"], (oldData) =>
       oldData.map((b) =>
-        b._id === board._id
-          ? { ...b, columns: newColumns }
-          : b
-      )
+        b._id === board._id ? { ...b, columns: newColumns } : b,
+      ),
     );
 
     await updateBoardColumns({
@@ -206,11 +203,11 @@ export const BoardsProvider = ({ children }) => {
 
   const handleCreateColumn = async (column, boardId) => {
     try {
-      await createColumnFn({column, boardId})
-    }catch (err) {
+      await createColumnFn({ column, boardId });
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <BoardsContext.Provider

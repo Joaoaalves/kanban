@@ -52,12 +52,10 @@ async function POST(req, res, user) {
     newBoard.columns = createdColumns.map((column) => column._id);
     await newBoard.save();
 
-    return res
-      .status(201)
-      .json({
-        message: "Board and columns created successfully",
-        board: newBoard,
-      });
+    return res.status(201).json({
+      message: "Board and columns created successfully",
+      board: newBoard,
+    });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });

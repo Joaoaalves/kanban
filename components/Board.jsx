@@ -1,7 +1,8 @@
 import { useBoards } from "@/contexts/BoardsProvider";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import NewColumnDialog from "@/components/NewColumnDialog"
+import { LuPencil } from "react-icons/lu";
+import NewColumnDialog from "@/components/NewColumnDialog";
 
 export default function Board({ boardId }) {
   const { getBoard, handleMoveColumn, handleMoveTask } = useBoards();
@@ -14,9 +15,9 @@ export default function Board({ boardId }) {
 
     if (!destination) return;
 
-    if (type === 'COLUMN') {
+    if (type === "COLUMN") {
       handleMoveColumn(source, destination);
-    } else if (type === 'TASK') {
+    } else if (type === "TASK") {
       handleMoveTask(source, destination);
     }
   };
@@ -27,22 +28,24 @@ export default function Board({ boardId }) {
         <EmptyBoard />
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId={board._id} type="COLUMN">
+          <Droppable droppableId={board._id} type="COLUMN" direction="horizontal">
             {(provided) => (
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 className="w-full h-full"
               >
-                <ScrollArea className="max-w-[80vw] h-full" orientation="horizontal">
+                <ScrollArea
+                  className="max-w-[80vw] h-full"
+                  orientation="horizontal"
+                >
                   <div className="w-max flex items-start justify-start gap-x-6 p-6">
-
-                {board.columns.map((column, index) => (
-                  <Column key={column._id} column={column} index={index} />
-                ))}
-                {provided.placeholder}
-                <NewColumn boardId={board._id}/>
-                <ScrollBar orientation="horizontal" />
+                    {board.columns.map((column, index) => (
+                      <Column key={column._id} column={column} index={index} />
+                    ))}
+                    {provided.placeholder}
+                    <NewColumn boardId={board._id} />
+                    <ScrollBar orientation="horizontal" />
                   </div>
                 </ScrollArea>
               </div>
@@ -79,9 +82,13 @@ function Column({ column, index }) {
           className="grid grid-cols-1 grid-rows-[3em_1fr] max-h-[85vh] min-w-72 gap-y-5 m-4 group hover:bg-medium-grey/5 dark:hover:bg-dark-grey/40 transition-all duration-300 rounded p-3 cursor-grab"
         >
           {column && (
-            <span className="text-medium-grey heading-s">
-              {column.name} ({column?.tasks?.length})
-            </span>
+            <div className="w-full flex items-center justify-between">
+              <NewColumnDialog column={column}>
+                <span className="text-medium-grey heading-s cursor-pointer">
+                  {column.name} ({column?.tasks?.length})
+                </span>
+              </NewColumnDialog>
+            </div>
           )}
           <ScrollArea className="!flex !flex-col !items-start justify-start !gap-y-5 max-h-[80vh]">
             <Droppable droppableId={column._id} type="TASK">
@@ -125,7 +132,7 @@ function Task({ task, index }) {
   );
 }
 
-function NewColumn({boardId}) {
+function NewColumn({ boardId }) {
   return (
     <NewColumnDialog boardId={boardId}>
       <div

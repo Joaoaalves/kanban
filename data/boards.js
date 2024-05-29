@@ -29,19 +29,19 @@ export async function createBoard(board) {
   }
 }
 
-export async function createColumn(column, boardId){
+export async function createColumn(column, boardId) {
   try {
     const res = await fetch("/api/column", {
-      method: 'POST',
-      body: JSON.stringify({...column, boardId}),
+      method: "POST",
+      body: JSON.stringify({ ...column, boardId }),
       headers: {
-        "Content-Type" : "application/json"
-      }
-    })
+        "Content-Type": "application/json",
+      },
+    });
 
-    const data = await res.json()
-    return data.column
-  }catch(error){
+    const data = await res.json();
+    return data.column;
+  } catch (error) {
     console.log(error);
   }
 }
