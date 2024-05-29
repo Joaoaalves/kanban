@@ -82,16 +82,7 @@ export const BoardsProvider = ({ children }) => {
       const [movedTask] = sourceTasks.splice(source.index, 1);
 
       if (source.droppableId === destination.droppableId) {
-        // Movendo dentro da mesma coluna
         sourceTasks.splice(destination.index, 0, movedTask);
-        await updateBoardColumns({
-          boardId: board._id,
-          columns: board.columns.map((col) =>
-            col._id === sourceColumn._id ? { ...col, tasks: sourceTasks } : col,
-          ),
-        });
-
-        // Atualizar o cache do React Query
         queryClient.setQueryData(["boards"], (oldData) =>
           oldData.map((b) =>
             b._id === board._id
@@ -106,23 +97,17 @@ export const BoardsProvider = ({ children }) => {
               : b,
           ),
         );
-      } else {
-        // Movendo entre colunas diferentes
-        const destinationTasks = [...destinationColumn.tasks];
-        destinationTasks.splice(destination.index, 0, movedTask);
-
+        console.log(board.columns.map((col) => col._id === sourceColumn._id ? {...col, tasks:sourceTasks} : col))
         await updateBoardColumns({
           boardId: board._id,
           columns: board.columns.map((col) =>
-            col._id === sourceColumn._id
-              ? { ...col, tasks: sourceTasks }
-              : col._id === destinationColumn._id
-                ? { ...col, tasks: destinationTasks }
-                : col,
+            col._id === sourceColumn._id ? { ...col, tasks: sourceTasks } : col,
           ),
         });
+      } else {
+        const destinationTasks = [...destinationColumn.tasks];
+        destinationTasks.splice(destination.index, 0, movedTask);
 
-        // Atualizar o cache do React Query
         queryClient.setQueryData(["boards"], (oldData) =>
           oldData.map((b) =>
             b._id === board._id
@@ -139,6 +124,16 @@ export const BoardsProvider = ({ children }) => {
               : b,
           ),
         );
+        await updateBoardColumns({
+          boardId: board._id,
+          columns: board.columns.map((col) =>
+            col._id === sourceColumn._id
+              ? { ...col, tasks: sourceTasks }
+              : col._id === destinationColumn._id
+                ? { ...col, tasks: destinationTasks }
+                : col,
+          ),
+        });
       }
     }
   };

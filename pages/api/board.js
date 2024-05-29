@@ -28,9 +28,6 @@ async function GET(res, user) {
       path: "columns",
       populate: {
         path: "tasks",
-        options: {
-          sort: { index: 1 },
-        },
       },
     });
     return res.status(200).json({ boards });
