@@ -62,14 +62,12 @@ export const BoardsProvider = ({ children }) => {
   const handleMoveTask = async (source, destination) => {
     if (!destination) return;
 
-    // Encontrar o board que contém a coluna de origem
     const board = boards.find((board) =>
       board.columns.some((col) => col._id === source.droppableId),
     );
 
     if (!board) return;
 
-    // Encontrar a coluna de origem e destino
     const sourceColumn = board.columns.find(
       (col) => col._id === source.droppableId,
     );
@@ -97,7 +95,6 @@ export const BoardsProvider = ({ children }) => {
               : b,
           ),
         );
-        console.log(board.columns.map((col) => col._id === sourceColumn._id ? {...col, tasks:sourceTasks} : col))
         await updateBoardColumns({
           boardId: board._id,
           columns: board.columns.map((col) =>
@@ -138,6 +135,31 @@ export const BoardsProvider = ({ children }) => {
     }
   };
 
+  const handleMoveColumn = async (source, destination) => {
+    if (!destination) return;
+
+    const board = boards.find((board) => board._id === source.droppableId);
+    console.log(source.droppableId)
+    if (!board) return;
+
+    const newColumns = Array.from(board.columns);
+    const [movedColumn] = newColumns.splice(source.index, 1);
+    newColumns.splice(destination.index, 0, movedColumn);
+
+    queryClient.setQueryData(["boards"], (oldData) =>
+      oldData.map((b) =>
+        b._id === board._id
+          ? { ...b, columns: newColumns }
+          : b
+      )
+    );
+
+    await updateBoardColumns({
+      boardId: board._id,
+      columns: newColumns,
+    });
+  };
+
   const getBoard = (boardId) => {
     return boards?.find((board) => board._id === boardId);
   };
@@ -166,6 +188,7 @@ export const BoardsProvider = ({ children }) => {
         getBoard,
         handleCreateTask,
         handleMoveTask,
+        handleMoveColumn,
       }}
     >
       {children}

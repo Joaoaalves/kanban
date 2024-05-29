@@ -26,6 +26,11 @@ async function PUT(req, res, user) {
     const board = await Board.findOne({ _id: boardId, owner: user._id });
     if (!board) return res.status(404).json({ message: "Board not found" });
 
+    // Update board columns order
+    board.columns = columns.map((column) => column._id);
+    await board.save();
+
+    // Update tasks order
     await Promise.all(
       columns.map(async (column) => {
         await Column.findByIdAndUpdate(column._id, {
