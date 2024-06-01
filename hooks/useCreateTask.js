@@ -7,16 +7,15 @@ const useCreateTask = (queryClient) => {
         const { task : newTask}  = await createTask(task, boardId);
         return { boardId, newTask };
       },
-      onSuccess: ({ boardId, newTask: task }) => {
-        
+      onSuccess: ({ boardId, newTask }) => {
         queryClient.setQueryData(["board", boardId], (oldBoard) => {
           return {
             ...oldBoard,
             columns: oldBoard.columns.map((column) => {
-              if (column._id === task.status) {
+              if (column._id === newTask.status) {
                 return {
                   ...column,
-                  tasks: [...column.tasks, task],
+                  tasks: [...column.tasks, newTask],
                 };
               }
               return column;
