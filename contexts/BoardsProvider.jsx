@@ -7,6 +7,8 @@ import {
   useCreateBoard,
   useCreateColumn,
   useCreateTask,
+  useEditBoard,
+  useDeleteBoard,
 } from "@/hooks";
 
 export const BoardsContext = createContext();
@@ -59,7 +61,7 @@ const moveColumn = async (source, destination, activeBoard, queryClient) => {
 };
 
 const updateActiveBoardLocally = (queryClient, activeBoard, updatedColumns) => {
-  queryClient.setQueryData(["board", activeBoard._id], (oldData) => ({
+  queryClient.setQueryData(["activeBoard", activeBoard._id], (oldData) => ({
     ...oldData,
     columns: updatedColumns,
   }));
@@ -91,6 +93,8 @@ export const BoardsProvider = ({ children, boardId }) => {
   const { mutateAsync: createBoard } = useCreateBoard(queryClient);
   const { mutateAsync: createColumn } = useCreateColumn(queryClient);
   const { mutateAsync: createTask } = useCreateTask(queryClient);
+  const { mutateAsync: editBoard } = useEditBoard(queryClient);
+  const { mutateAsync: deleteBoard } = useDeleteBoard(queryClient);
 
   const handleMoveTask = (source, destination) =>
     moveTask(source, destination, activeBoard, queryClient);
@@ -100,6 +104,22 @@ export const BoardsProvider = ({ children, boardId }) => {
   const handleCreateBoard = async (board) => {
     try {
       await createBoard({ board });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleEditBoard = async (board) => {
+    try {
+      await editBoard({ board });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeleteBoard = async (boardId) => {
+    try {
+      await deleteBoard({ boardId });
     } catch (err) {
       console.log(err);
     }
@@ -125,7 +145,7 @@ export const BoardsProvider = ({ children, boardId }) => {
     try {
       const editedColumn = await updateColumn(column);
 
-      queryClient.setQueryData(["board", boardId], (oldBoard) => {
+      queryClient.setQueryData(["activeBoard", boardId], (oldBoard) => {
         if (!oldBoard) return oldBoard;
 
         const updatedColumns = oldBoard.columns.map((col) => {
@@ -153,6 +173,8 @@ export const BoardsProvider = ({ children, boardId }) => {
         handleMoveTask,
         handleUpdateColumn,
         handleMoveColumn,
+        handleEditBoard,
+        handleDeleteBoard,
       }}
     >
       {children}

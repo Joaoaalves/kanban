@@ -43,6 +43,34 @@ export async function createBoard(board) {
   }
 }
 
+export async function editBoard(board) {
+  try {
+    const res = await fetch(`/api/board/${board._id}`, {
+      method: "PUT",
+      body: JSON.stringify(board),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    return data.board;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteBoard(boardId) {
+  try {
+    const res = await fetch(`/api/board/${boardId}`, {
+      method: "DELETE",
+    });
+    const data = await res.json();
+    return data.message;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function createColumn(column, boardId) {
   try {
     const res = await fetch("/api/column", {

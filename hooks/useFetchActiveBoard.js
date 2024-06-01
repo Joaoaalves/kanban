@@ -4,7 +4,7 @@ import { getBoardById } from "@/data/boards";
 const useFetchActiveBoard = (boardId) => {
   return useQuery({
     queryFn: () => getBoardById(boardId),
-    queryKey: ["board", boardId],
+    queryKey: ["activeBoard", boardId],
     enabled: !!boardId,
   });
 };

@@ -18,7 +18,7 @@ export default function ThemeToggle() {
         alt="Light Mode Icon"
       />
       <Switch
-        value={theme === "dark"}
+        value={theme === "light"}
         onClick={toggleDarkMode}
         className="!bg-purple switch"
       />

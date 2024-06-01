@@ -22,4 +22,14 @@ const boardSchema = new mongoose.Schema(
   },
 );
 
+boardSchema.pre("remove", async function (next) {
+  try {
+    // Delete all columns associated with this board
+    await this.model("Column").deleteMany({ _id: { $in: this.columns } });
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default mongoose.models.Board || mongoose.model("Board", boardSchema);

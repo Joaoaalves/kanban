@@ -8,7 +8,7 @@ const useCreateTask = (queryClient) => {
       return { boardId, newTask };
     },
     onSuccess: ({ boardId, newTask }) => {
-      queryClient.setQueryData(["board", boardId], (oldBoard) => {
+      queryClient.setQueryData(["activeBoard", boardId], (oldBoard) => {
         return {
           ...oldBoard,
           columns: oldBoard.columns.map((column) => {

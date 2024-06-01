@@ -3,3 +3,5 @@ export { default as useFetchActiveBoard } from "./useFetchActiveBoard";
 export { default as useCreateBoard } from "./useCreateBoard";
 export { default as useCreateColumn } from "./useCreateColumn";
 export { default as useCreateTask } from "./useCreateTask";
+export { default as useEditBoard } from "./useEditBoard";
+export { default as useDeleteBoard } from "./useDeleteBoard";

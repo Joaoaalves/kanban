@@ -10,7 +10,7 @@ const useCreateColumn = (queryClient) => {
     onSuccess: ({ createdColumn, boardId }) => {
       if (!createdColumn) return;
 
-      queryClient.setQueryData(["board", boardId], (oldBoard) => {
+      queryClient.setQueryData(["activeBoard", boardId], (oldBoard) => {
         return {
           ...oldBoard,
           columns: [...oldBoard.columns, createdColumn],

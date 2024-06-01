@@ -14,6 +14,7 @@ export default async function handler(req, res) {
   const user = await findUser(session);
   if (req.method === "GET") return GET(req, res, user);
   if (req.method === "PUT") return PUT(req, res, user);
+  if (req.method === "DELETE") return DELETE(req, res, user);
 
   return res.status(405).json({ message: "Method not allowed" });
 }
@@ -44,16 +45,40 @@ async function PUT(req, res, user) {
   try {
     await connectDB();
     const { boardId } = req.query;
-    const { columns } = req.body;
+    const { name, columns } = req.body;
+
     const board = await Board.findOne({ _id: boardId, owner: user._id });
     if (!board) return res.status(404).json({ message: "Board not found" });
 
     board.columns = columns;
+    board.name = name || board.name;
     await board.save();
 
-    return res.status(200).json({ message: "Columns updated successfully" });
+    return res
+      .status(200)
+      .json({ message: "Board updated successfully", board });
   } catch (error) {
     console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function DELETE(req, res, user) {
+  try {
+    await connectDB();
+    const { boardId } = req.query;
+
+    const board = await Board.findOneAndDelete({
+      _id: boardId,
+      owner: user._id,
+    });
+    if (!board) return res.status(404).json({ message: "Board not found." });
+
+    return res
+      .status(200)
+      .json({ message: "Board deleted successfully.", boardId: boardId });
+  } catch (error) {
+    console.log("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
