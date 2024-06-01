@@ -1,17 +1,17 @@
 import { useBoards } from "@/contexts/BoardsProvider";
 import Image from "next/image";
 import { NewTaskDialog } from "./NewTaskDialog";
-export default function TopBar({ boardId }) {
-  const { getBoard } = useBoards();
-  const board = getBoard(boardId);
 
-  if (!board) return;
+export default function TopBar() {
+  const { activeBoard } = useBoards();
+
+  if (!activeBoard) return;
   return (
     <div className="w-full border-b-2 light:border-light-lines dark:border-dark-lines h-24 flex items-center justify-between bg-white dark:bg-dark-grey px-6">
-      <h1 className="heading-xl">{board.name}</h1>
+      <h1 className="heading-xl">{activeBoard.name}</h1>
 
       <div className="flex items-center justify-center gap-x-6">
-        <NewTaskDialog board={board}>
+        <NewTaskDialog board={activeBoard}>
           <button className="py-2 px-6 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold">
             + Add New Task
           </button>

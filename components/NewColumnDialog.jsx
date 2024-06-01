@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import NewColumnForm from "./NewColumnForm";
 
-export default function NewColumn({ children, boardId, column }) {
+export default function NewColumn({ children, boardId}) {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -15,7 +15,7 @@ export default function NewColumn({ children, boardId, column }) {
         <DialogHeader>
           <DialogTitle>Add New Column</DialogTitle>
         </DialogHeader>
-        <NewColumnForm boardId={boardId} column={column}/>
+        <NewColumnForm boardId={boardId}/>
       </DialogContent>
     </Dialog>
   );

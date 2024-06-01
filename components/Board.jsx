@@ -1,14 +1,13 @@
 import { useBoards } from "@/contexts/BoardsProvider";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { LuPencil } from "react-icons/lu";
 import NewColumnDialog from "@/components/NewColumnDialog";
+import EditColumnDialog from "@/components/EditColumnDialog";
 
-export default function Board({ boardId }) {
-  const { getBoard, handleMoveColumn, handleMoveTask } = useBoards();
-  const board = getBoard(boardId);
-
-  if (!board) return null;
+export default function Board() {
+  const { activeBoard, handleMoveColumn, handleMoveTask } = useBoards();
+  
+  if (!activeBoard || activeBoard?.error) return;
 
   const onDragEnd = (result) => {
     const { source, destination, type } = result;
@@ -24,11 +23,11 @@ export default function Board({ boardId }) {
 
   return (
     <div className="w-full h-full bg-light-bg dark:bg-dark-bg">
-      {board && !board.columns ? (
+      {activeBoard && !activeBoard.columns ? (
         <EmptyBoard />
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId={board._id} type="COLUMN" direction="horizontal">
+          <Droppable droppableId={activeBoard._id} type="COLUMN" direction="horizontal">
             {(provided) => (
               <div
                 {...provided.droppableProps}
@@ -40,11 +39,11 @@ export default function Board({ boardId }) {
                   orientation="horizontal"
                 >
                   <div className="w-max flex items-start justify-start gap-x-6 p-6">
-                    {board.columns.map((column, index) => (
-                      <Column key={column._id} column={column} index={index} />
+                    {activeBoard.columns.map((column, index) => (
+                      <Column key={column._id} column={column} boardId={activeBoard._id} index={index} />
                     ))}
                     {provided.placeholder}
-                    <NewColumn boardId={board._id} />
+                    <NewColumn />
                     <ScrollBar orientation="horizontal" />
                   </div>
                 </ScrollArea>
@@ -83,11 +82,11 @@ function Column({ column, index }) {
         >
           {column && (
             <div className="w-full flex items-center justify-between">
-              <NewColumnDialog column={column}>
+              <EditColumnDialog  column={column}>
                 <span className="text-medium-grey heading-s cursor-pointer">
                   {column.name} ({column?.tasks?.length})
                 </span>
-              </NewColumnDialog>
+              </EditColumnDialog>
             </div>
           )}
           <ScrollArea className="!flex !flex-col !items-start justify-start !gap-y-5 max-h-[80vh]">
@@ -132,7 +131,13 @@ function Task({ task, index }) {
   );
 }
 
-function NewColumn({ boardId }) {
+function NewColumn() {
+  const {activeBoard} = useBoards()
+  const boardId = activeBoard._id
+
+  if(!boardId)
+    return
+
   return (
     <NewColumnDialog boardId={boardId}>
       <div

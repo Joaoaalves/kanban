@@ -2,8 +2,8 @@ import { object, string } from "zod";
 import { useForm } from "react-hook-form";
 import { useBoards } from "@/contexts/BoardsProvider";
 
-export default function NewBoardForm({  boardId }) {
-  const { handleCreateColumn } = useBoards();
+export default function NewBoardForm({  column }) {
+  const { handleUpdateColumn } = useBoards();
 
   const columnSchema = object({
     name: string().min(3),
@@ -15,12 +15,13 @@ export default function NewBoardForm({  boardId }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
+        _id: column._id,
+        name: column.name,
     },
   });
 
   const onSubmit = async (data) => {
-    handleCreateColumn(data, boardId);
+    handleUpdateColumn(data);
   };
 
   return (
@@ -49,7 +50,7 @@ export default function NewBoardForm({  boardId }) {
       <input
         type="submit"
         className="py-2 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold"
-        value={"Create New Board"}
+        value={"Save Board"}
       />
     </form>
   );

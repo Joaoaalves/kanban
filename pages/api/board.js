@@ -24,12 +24,7 @@ export default async function handler(req, res) {
 async function GET(res, user) {
   try {
     await connectDB();
-    const boards = await Board.find({ owner: user._id }).populate({
-      path: "columns",
-      populate: {
-        path: "tasks",
-      },
-    });
+    const boards = await Board.find({ owner: user._id })
     return res.status(200).json({ boards });
   } catch (error) {
     console.error("Error:", error);
@@ -67,8 +62,6 @@ async function PUT(req, res, user) {
     await connectDB();
 
     const { _id, name, columns } = req.body;
-    console.log(req.body);
-    return;
     const board = await Board.findOne({ _id, owner: user._id });
     if (!board) {
       return res.status(404).json({ message: "Board not found" });

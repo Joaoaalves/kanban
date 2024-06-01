@@ -13,6 +13,20 @@ export const getBoards = async () => {
   }
 };
 
+export const getBoardById = async (boardId) => {
+  try {
+    const res = await fetch(`/api/board/${boardId}`);
+    if (!res.ok) {
+      return { error: `Error: ${res.status} ${res.statusText}` };
+    }
+    
+    const data = await res.json();
+    return data.board;
+  } catch (error) {
+    return { error: error.message };
+  }
+};
+
 export async function createBoard(board) {
   try {
     const res = await fetch("/api/board", {
@@ -46,6 +60,23 @@ export async function createColumn(column, boardId) {
   }
 }
 
+export async function updateColumn(column){
+  try{
+    const res = await fetch("/api/column", {
+      method: "PUT",
+      body: JSON.stringify(column),
+      headers: {
+        "Content-Type" : "application/json"
+      }
+    })
+
+    const data = await res.json();
+    return data.column
+  }catch(error){
+    console.log(error)
+  }
+}
+
 export async function updateBoard(board) {
   try {
     const res = await fetch(`/api/board`, {
@@ -66,7 +97,7 @@ export async function updateBoardColumns({ boardId, columns }) {
   try {
     await fetch(`/api/board/${boardId}`, {
       method: "PUT",
-      body: JSON.stringify({ columns }),
+      body: JSON.stringify( {columns} ),
       headers: {
         "Content-Type": "application/json",
       },

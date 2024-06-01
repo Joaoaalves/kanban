@@ -20,7 +20,7 @@ export default function Page() {
     <main
       className={`bg-light-bg dark:bg-dark-bg flex items-start gap-y-8 h-screen w-screen ${font.className}`}
     >
-      <BoardsProvider>
+      <BoardsProvider boardId={boardId}>
         <SidePanel />
         <div className="w-full h-screen flex flex-col">
           <TopBar boardId={boardId} />

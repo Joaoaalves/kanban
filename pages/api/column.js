@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/connectDB";
 import Board from "@/models/Board";
 import Column from "@/models/Column";
+import Task from "@/models/Task";
 import { getServerSession } from "next-auth/next";
 import authOptions from "./auth/[...nextauth]";
 import User from "@/models/User";
@@ -57,27 +58,31 @@ async function POST(req, res, user) {
   }
 }
 
-async function PUT(req, res, user) {
+async function PUT(req, res) {
   try {
     await connectDB();
 
-    const data = req.body;
+    const { name, _id, tasks } = req.body;
+    
+    const updateData = { name };
 
-    const column = await Column.findByIdAndUpdate(data._id, {
-      ...data,
-    });
+    if (tasks) {
+      updateData.tasks = tasks;
+    }
 
-    if (!column)
+    const column = await Column.findByIdAndUpdate(_id, updateData, { new: true }).populate('tasks')
+
+    if (!column) {
       return res.status(404).json({ message: "Board with this id not found" });
+    }
 
-    return res
-      .status(200)
-      .json({ message: "Board updated successfully", column });
+    return res.status(200).json({ message: "Board updated successfully", column });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
 
 async function findUser(session) {
   return await User.findOne({ email: session.user.email }, { password: 0 });

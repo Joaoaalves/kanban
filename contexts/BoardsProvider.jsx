@@ -1,193 +1,98 @@
-import { createContext, useContext } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  getBoards,
-  createBoard,
-  updateBoard,
-  createColumn,
-  updateBoardColumns,
-} from "@/data/boards";
-import { createTask } from "@/data/tasks";
+import { createContext, useContext, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { updateColumn, updateBoardColumns } from "@/data/boards";
+import { useFetchBoards, useFetchActiveBoard, useCreateBoard, useCreateColumn, useCreateTask } from "@/hooks";
 
 export const BoardsContext = createContext();
 
-export const BoardsProvider = ({ children }) => {
-  const queryClient = useQueryClient();
+const moveTask = async (source, destination, activeBoard, queryClient) => {
+  if (!destination) return;
 
-  const { data: boards } = useQuery({
-    queryFn: getBoards,
-    queryKey: ["boards"],
-  });
+  const sourceColumn = activeBoard.columns.find(
+    (col) => col._id === source.droppableId
+  );
 
-  const { mutateAsync: createBoardFn } = useMutation({
-    mutationFn: async ({ board }) => {
-      const createdBoard = await createBoard(board);
-      return { createdBoard };
-    },
-    onSuccess: ({ createdBoard }) => {
-      queryClient.setQueryData(["boards"], (data) => {
-        return [...data, createdBoard];
-      });
-    },
-  });
+  const destinationColumn = activeBoard.columns.find(
+    (col) => col._id === destination.droppableId
+  );
 
-  const { mutateAsync: createColumnFn } = useMutation({
-    mutationFn: async ({ column, boardId }) => {
-      const createdColumn = await createColumn(column, boardId);
-      return { createdColumn, boardId };
-    },
-    onSuccess: ({ createdColumn, boardId }) => {
-      if (!createdColumn) return;
+  if (sourceColumn && destinationColumn) {
+    const sourceTasks = [...sourceColumn.tasks];
+    const [movedTask] = sourceTasks.splice(source.index, 1);
 
-      queryClient.setQueryData(["boards"], (boards) => {
-        return boards.map((board) => {
-          if (board._id === boardId) {
-            return {
-              ...board,
-              columns: [...board.columns, createdColumn],
-            };
-          }
-          return board;
-        });
-      });
-    },
-  });
+    if (source.droppableId === destination.droppableId) {
+      sourceTasks.splice(destination.index, 0, movedTask);
+      updateActiveBoardLocally(queryClient, activeBoard, [
+        { ...sourceColumn, tasks: sourceTasks }
+      ]);
 
-  const { mutateAsync: createTaskFn } = useMutation({
-    mutationFn: async ({ task, boardId }) => {
-      const { response } = await createTask(task, boardId);
-      return { response, boardId };
-    },
-    onSuccess: ({ response, boardId }) => {
-      const { task } = response;
-      queryClient.setQueryData(["boards"], (boards) => {
-        return boards.map((board) => {
-          if (board._id === boardId) {
-            return {
-              ...board,
-              columns: board.columns.map((column) => {
-                if (column._id === task.status) {
-                  return {
-                    ...column,
-                    tasks: [...column.tasks, task],
-                  };
-                }
-                return column;
-              }),
-            };
-          }
-          return board;
-        });
-      });
-    },
-  });
+      // Use updateColumn function to update the source column
+      await updateColumn({ ...sourceColumn, tasks: sourceTasks });
 
-  const handleMoveTask = async (source, destination) => {
-    if (!destination) return;
+    } else {
+      const destinationTasks = [...destinationColumn.tasks];
+      destinationTasks.splice(destination.index, 0, movedTask);
+      updateActiveBoardLocally(queryClient, activeBoard, [
+        { ...sourceColumn, tasks: sourceTasks },
+        { ...destinationColumn, tasks: destinationTasks }
+      ]);
 
-    const board = boards.find((board) =>
-      board.columns.some((col) => col._id === source.droppableId),
-    );
-
-    if (!board) return;
-
-    const sourceColumn = board.columns.find(
-      (col) => col._id === source.droppableId,
-    );
-    const destinationColumn = board.columns.find(
-      (col) => col._id === destination.droppableId,
-    );
-
-    if (sourceColumn && destinationColumn) {
-      const sourceTasks = [...sourceColumn.tasks];
-      const [movedTask] = sourceTasks.splice(source.index, 1);
-
-      if (source.droppableId === destination.droppableId) {
-        sourceTasks.splice(destination.index, 0, movedTask);
-        queryClient.setQueryData(["boards"], (oldData) =>
-          oldData.map((b) =>
-            b._id === board._id
-              ? {
-                  ...b,
-                  columns: b.columns.map((col) =>
-                    col._id === sourceColumn._id
-                      ? { ...col, tasks: sourceTasks }
-                      : col,
-                  ),
-                }
-              : b,
-          ),
-        );
-        await updateBoardColumns({
-          boardId: board._id,
-          columns: board.columns.map((col) =>
-            col._id === sourceColumn._id ? { ...col, tasks: sourceTasks } : col,
-          ),
-        });
-      } else {
-        const destinationTasks = [...destinationColumn.tasks];
-        destinationTasks.splice(destination.index, 0, movedTask);
-
-        queryClient.setQueryData(["boards"], (oldData) =>
-          oldData.map((b) =>
-            b._id === board._id
-              ? {
-                  ...b,
-                  columns: b.columns.map((col) =>
-                    col._id === sourceColumn._id
-                      ? { ...col, tasks: sourceTasks }
-                      : col._id === destinationColumn._id
-                        ? { ...col, tasks: destinationTasks }
-                        : col,
-                  ),
-                }
-              : b,
-          ),
-        );
-        await updateBoardColumns({
-          boardId: board._id,
-          columns: board.columns.map((col) =>
-            col._id === sourceColumn._id
-              ? { ...col, tasks: sourceTasks }
-              : col._id === destinationColumn._id
-                ? { ...col, tasks: destinationTasks }
-                : col,
-          ),
-        });
-      }
+      // Use updateColumn function to update both the source and destination columns
+      await updateColumn({ ...sourceColumn, tasks: sourceTasks });
+      await updateColumn({ ...destinationColumn, tasks: destinationTasks });
     }
-  };
+  }
+};
 
-  const handleMoveColumn = async (source, destination) => {
-    if (!destination) return;
+const moveColumn = async (source, destination, activeBoard, queryClient) => {
+  if (!destination) return;
 
-    const board = boards.find((board) => board._id === source.droppableId);
-    console.log(source.droppableId);
-    if (!board) return;
+  const newColumns = Array.from(activeBoard.columns);
+  const [movedColumn] = newColumns.splice(source.index, 1);
+  newColumns.splice(destination.index, 0, movedColumn);
 
-    const newColumns = Array.from(board.columns);
-    const [movedColumn] = newColumns.splice(source.index, 1);
-    newColumns.splice(destination.index, 0, movedColumn);
+  updateActiveBoardLocally(queryClient, activeBoard, newColumns);
+  await updateActiveBoardRemotely(activeBoard, newColumns);
+};
 
-    queryClient.setQueryData(["boards"], (oldData) =>
-      oldData.map((b) =>
-        b._id === board._id ? { ...b, columns: newColumns } : b,
-      ),
-    );
+const updateActiveBoardLocally = (queryClient, activeBoard, updatedColumns) => {
+  queryClient.setQueryData(["board", activeBoard._id], (oldData) =>
+    ({ ...oldData, columns: updatedColumns })
+  );
+};
 
+const updateActiveBoardRemotely = async (activeBoard, updatedColumns) => {
+  try {
     await updateBoardColumns({
-      boardId: board._id,
-      columns: newColumns,
+      boardId: activeBoard._id,
+      columns: updatedColumns,
     });
-  };
+  } catch (error) {
+    console.error("Error updating the board remotely: ", error);
+  }
+};
 
-  const getBoard = (boardId) => {
-    return boards?.find((board) => board._id === boardId);
-  };
+export const BoardsProvider = ({ children, boardId }) => {
+  const queryClient = useQueryClient();
+  const { data: boards } = useFetchBoards();
+  const { data: activeBoard, refetch: refetchActiveBoard } = useFetchActiveBoard(boardId);
+
+  useEffect(() => {
+    if (boardId) {
+      refetchActiveBoard();
+    }
+  }, [boardId, refetchActiveBoard]);
+
+  const { mutateAsync: createBoard } = useCreateBoard(queryClient);
+  const { mutateAsync: createColumn } = useCreateColumn(queryClient);
+  const { mutateAsync: createTask } = useCreateTask(queryClient);
+
+  const handleMoveTask = (source, destination) => moveTask(source, destination, activeBoard, queryClient);
+  const handleMoveColumn = (source, destination) => moveColumn(source, destination, activeBoard, queryClient);
 
   const handleCreateBoard = async (board) => {
     try {
-      await createBoardFn({ board });
+      await createBoard({ board });
     } catch (err) {
       console.log(err);
     }
@@ -195,7 +100,7 @@ export const BoardsProvider = ({ children }) => {
 
   const handleCreateTask = async (task, boardId) => {
     try {
-      await createTaskFn({ task, boardId });
+      await createTask({ task, boardId });
     } catch (err) {
       console.log(err);
     }
@@ -203,7 +108,28 @@ export const BoardsProvider = ({ children }) => {
 
   const handleCreateColumn = async (column, boardId) => {
     try {
-      await createColumnFn({ column, boardId });
+      await createColumn({ column, boardId });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleUpdateColumn = async (column) => {
+    try {
+      const editedColumn = await updateColumn(column);
+
+      queryClient.setQueryData(["board", boardId], (oldBoard) => {
+        if (!oldBoard) return oldBoard;
+
+        const updatedColumns = oldBoard.columns.map((col) => {
+          if (col._id === editedColumn._id) {
+            return editedColumn;
+          }
+          return col;
+        });
+
+        return { ...oldBoard, columns: updatedColumns };
+      });
     } catch (err) {
       console.log(err);
     }
@@ -213,11 +139,12 @@ export const BoardsProvider = ({ children }) => {
     <BoardsContext.Provider
       value={{
         boards,
+        activeBoard,
         handleCreateBoard,
-        getBoard,
         handleCreateTask,
         handleCreateColumn,
         handleMoveTask,
+        handleUpdateColumn,
         handleMoveColumn,
       }}
     >
