@@ -63,26 +63,29 @@ async function PUT(req, res) {
     await connectDB();
 
     const { name, _id, tasks } = req.body;
-    
+
     const updateData = { name };
 
     if (tasks) {
       updateData.tasks = tasks;
     }
 
-    const column = await Column.findByIdAndUpdate(_id, updateData, { new: true }).populate('tasks')
+    const column = await Column.findByIdAndUpdate(_id, updateData, {
+      new: true,
+    }).populate("tasks");
 
     if (!column) {
       return res.status(404).json({ message: "Board with this id not found" });
     }
 
-    return res.status(200).json({ message: "Board updated successfully", column });
+    return res
+      .status(200)
+      .json({ message: "Board updated successfully", column });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
-
 
 async function findUser(session) {
   return await User.findOne({ email: session.user.email }, { password: 0 });

@@ -1,6 +1,6 @@
 import { useBoards } from "@/contexts/BoardsProvider";
 import Image from "next/image";
-import { NewTaskDialog } from "./NewTaskDialog";
+import NewTask from "./NewTask";
 
 export default function TopBar() {
   const { activeBoard } = useBoards();
@@ -11,11 +11,11 @@ export default function TopBar() {
       <h1 className="heading-xl">{activeBoard.name}</h1>
 
       <div className="flex items-center justify-center gap-x-6">
-        <NewTaskDialog board={activeBoard}>
+        <NewTask board={activeBoard}>
           <button className="py-2 px-6 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold">
             + Add New Task
           </button>
-        </NewTaskDialog>
+        </NewTask>
         <button className="group">
           <Image
             src="/images/icon-vertical-ellipsis.svg"

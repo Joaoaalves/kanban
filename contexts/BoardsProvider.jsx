@@ -1,7 +1,13 @@
 import { createContext, useContext, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { updateColumn, updateBoardColumns } from "@/data/boards";
-import { useFetchBoards, useFetchActiveBoard, useCreateBoard, useCreateColumn, useCreateTask } from "@/hooks";
+import {
+  useFetchBoards,
+  useFetchActiveBoard,
+  useCreateBoard,
+  useCreateColumn,
+  useCreateTask,
+} from "@/hooks";
 
 export const BoardsContext = createContext();
 
@@ -9,11 +15,11 @@ const moveTask = async (source, destination, activeBoard, queryClient) => {
   if (!destination) return;
 
   const sourceColumn = activeBoard.columns.find(
-    (col) => col._id === source.droppableId
+    (col) => col._id === source.droppableId,
   );
 
   const destinationColumn = activeBoard.columns.find(
-    (col) => col._id === destination.droppableId
+    (col) => col._id === destination.droppableId,
   );
 
   if (sourceColumn && destinationColumn) {
@@ -23,21 +29,18 @@ const moveTask = async (source, destination, activeBoard, queryClient) => {
     if (source.droppableId === destination.droppableId) {
       sourceTasks.splice(destination.index, 0, movedTask);
       updateActiveBoardLocally(queryClient, activeBoard, [
-        { ...sourceColumn, tasks: sourceTasks }
+        { ...sourceColumn, tasks: sourceTasks },
       ]);
 
-      // Use updateColumn function to update the source column
       await updateColumn({ ...sourceColumn, tasks: sourceTasks });
-
     } else {
       const destinationTasks = [...destinationColumn.tasks];
       destinationTasks.splice(destination.index, 0, movedTask);
       updateActiveBoardLocally(queryClient, activeBoard, [
         { ...sourceColumn, tasks: sourceTasks },
-        { ...destinationColumn, tasks: destinationTasks }
+        { ...destinationColumn, tasks: destinationTasks },
       ]);
 
-      // Use updateColumn function to update both the source and destination columns
       await updateColumn({ ...sourceColumn, tasks: sourceTasks });
       await updateColumn({ ...destinationColumn, tasks: destinationTasks });
     }
@@ -56,9 +59,10 @@ const moveColumn = async (source, destination, activeBoard, queryClient) => {
 };
 
 const updateActiveBoardLocally = (queryClient, activeBoard, updatedColumns) => {
-  queryClient.setQueryData(["board", activeBoard._id], (oldData) =>
-    ({ ...oldData, columns: updatedColumns })
-  );
+  queryClient.setQueryData(["board", activeBoard._id], (oldData) => ({
+    ...oldData,
+    columns: updatedColumns,
+  }));
 };
 
 const updateActiveBoardRemotely = async (activeBoard, updatedColumns) => {
@@ -75,7 +79,8 @@ const updateActiveBoardRemotely = async (activeBoard, updatedColumns) => {
 export const BoardsProvider = ({ children, boardId }) => {
   const queryClient = useQueryClient();
   const { data: boards } = useFetchBoards();
-  const { data: activeBoard, refetch: refetchActiveBoard } = useFetchActiveBoard(boardId);
+  const { data: activeBoard, refetch: refetchActiveBoard } =
+    useFetchActiveBoard(boardId);
 
   useEffect(() => {
     if (boardId) {
@@ -87,8 +92,10 @@ export const BoardsProvider = ({ children, boardId }) => {
   const { mutateAsync: createColumn } = useCreateColumn(queryClient);
   const { mutateAsync: createTask } = useCreateTask(queryClient);
 
-  const handleMoveTask = (source, destination) => moveTask(source, destination, activeBoard, queryClient);
-  const handleMoveColumn = (source, destination) => moveColumn(source, destination, activeBoard, queryClient);
+  const handleMoveTask = (source, destination) =>
+    moveTask(source, destination, activeBoard, queryClient);
+  const handleMoveColumn = (source, destination) =>
+    moveColumn(source, destination, activeBoard, queryClient);
 
   const handleCreateBoard = async (board) => {
     try {

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import ItemNav from "./ItemNav";
-import { NewBoardDialog } from "./NewBoardDialog";
+import NewBoard from "./NewBoard";
 import { useBoards } from "@/contexts/BoardsProvider";
 import { useRouter } from "next/router";
 
@@ -18,7 +18,7 @@ export default function BoardsNav() {
         {boards?.map((board) => (
           <BoardLink key={board._id} board={board} isActive={board._id === 1} />
         ))}
-        <NewBoardDialog>
+        <NewBoard>
           <ItemNav className={"text-purple"}>
             <Image
               src={"/images/icon-board.svg"}
@@ -29,7 +29,7 @@ export default function BoardsNav() {
             />
             + Create New Board
           </ItemNav>
-        </NewBoardDialog>
+        </NewBoard>
       </nav>
     </div>
   );

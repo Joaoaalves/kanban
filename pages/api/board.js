@@ -24,7 +24,7 @@ export default async function handler(req, res) {
 async function GET(res, user) {
   try {
     await connectDB();
-    const boards = await Board.find({ owner: user._id })
+    const boards = await Board.find({ owner: user._id });
     return res.status(200).json({ boards });
   } catch (error) {
     console.error("Error:", error);
