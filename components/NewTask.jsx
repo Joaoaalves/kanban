@@ -33,6 +33,7 @@ export default function NewTaskForm({ children, board }) {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -58,6 +59,7 @@ export default function NewTaskForm({ children, board }) {
 
   const onSubmit = async (data) => {
     await handleCreateTask(data, board._id);
+    reset()
     setOpen(false);
   };
 

@@ -22,6 +22,7 @@ export default function NewBoardForm({ children, boardId }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -31,6 +32,7 @@ export default function NewBoardForm({ children, boardId }) {
 
   const onSubmit = async (data) => {
     await handleCreateColumn(data, boardId);
+    reset();
     setOpen(false);
   };
 

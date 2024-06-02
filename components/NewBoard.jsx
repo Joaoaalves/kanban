@@ -30,6 +30,7 @@ export default function NewBoard({ children }) {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -52,6 +53,7 @@ export default function NewBoard({ children }) {
 
   const onSubmit = async (data) => {
     await handleCreateBoard(data);
+    reset();
     setOpen(false);
   };
 
