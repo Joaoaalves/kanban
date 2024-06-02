@@ -8,7 +8,7 @@ export default function ThemeToggle() {
   const toggleDarkMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
-
+  
   return (
     <div className="bg-light-bg dark:bg-dark-bg py-[14px] px-8 lg:px-16 gap-x-6 flex items-center justify-center rounded-md mt-auto">
       <Image
@@ -18,7 +18,7 @@ export default function ThemeToggle() {
         alt="Light Mode Icon"
       />
       <Switch
-        value={theme === "light"}
+        value={theme === "dark"}
         onClick={toggleDarkMode}
         className="!bg-purple switch"
       />

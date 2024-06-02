@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+import Column from "./Column";
 const boardSchema = new mongoose.Schema(
   {
     name: {
@@ -22,10 +22,10 @@ const boardSchema = new mongoose.Schema(
   },
 );
 
-boardSchema.pre("remove", async function (next) {
+boardSchema.pre("findOneAndDelete", async function (next) {
   try {
-    // Delete all columns associated with this board
-    await this.model("Column").deleteMany({ _id: { $in: this.columns } });
+    const board = await this.model.findOne(this.getQuery())
+    await Column.deleteMany({ _id: { $in: board.columns } });
     next();
   } catch (error) {
     next(error);
