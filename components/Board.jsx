@@ -1,14 +1,15 @@
-import { useBoards } from "@/contexts/BoardsProvider";
+import {useBoard} from "@/contexts/BoardProvider";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import NewColumn from "@/components/NewColumn";
 import EditColumn from "@/components/EditColumn";
+import Task from "./Task";
+import useColumn from "@/hooks/useColumn";
+import useTask from "@/hooks/useTask";
 
 export default function Board() {
-  const { activeBoard, handleMoveColumn, handleMoveTask } = useBoards();
-
-  if (!activeBoard || activeBoard?.error) return;
-
+  const { board, handleMoveColumn, handleMoveTask } = useBoard();
+  if(!board) return
   const onDragEnd = (result) => {
     const { source, destination, type } = result;
 
@@ -22,13 +23,13 @@ export default function Board() {
   };
 
   return (
-    <div className="w-full h-full bg-light-bg dark:bg-dark-bg">
-      {activeBoard && !activeBoard.columns ? (
+    <div className="w-full bg-light-bg dark:bg-dark-bg custom-scroll">
+      {board && !board.columns ? (
         <EmptyBoard />
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
-            droppableId={activeBoard._id}
+            droppableId={board._id}
             type="COLUMN"
             direction="horizontal"
           >
@@ -36,26 +37,20 @@ export default function Board() {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="w-full h-full"
+                className="max-w-full overflow-x-auto custom-scroll"
               >
-                <ScrollArea
-                  className="max-w-[80vw] h-full"
-                  orientation="horizontal"
-                >
-                  <div className="w-max flex items-start justify-start gap-x-6 p-6">
-                    {activeBoard.columns.map((column, index) => (
+                  <div className="flex items-start justify-start max-w-full p-6">
+                    {board.columns.map((column, index) => (
                       <Column
-                        key={column._id}
-                        column={column}
-                        boardId={activeBoard._id}
+                        key={column?._id ||  column}
+                        columnId={column?._id ||  column}
+                        boardId={board._id}
                         index={index}
                       />
                     ))}
                     {provided.placeholder}
                     <AddNewColumn />
-                    <ScrollBar orientation="horizontal" />
                   </div>
-                </ScrollArea>
               </div>
             )}
           </Droppable>
@@ -67,19 +62,17 @@ export default function Board() {
 
 function EmptyBoard() {
   return (
-    <section className="w-full h-full flex flex-col items-center justify-center gap-y-8">
+    <section className="flex h-full w-full flex-col items-center justify-center gap-y-8">
       <p>This board is empty. Create a new column to get started.</p>
-      <button
-        className="py-2 px-4 rounded-full w-full bg-purple text-white hover:bg-light-purple
-                             hover:text-white transition-all duration-300 font-bold"
-      >
+      <button className="w-full rounded-full bg-purple px-4 py-2 font-bold text-white transition-all duration-300 hover:bg-light-purple hover:text-white">
         + Add New Column
       </button>
     </section>
   );
 }
 
-function Column({ column, index }) {
+function Column({ columnId, index }) {
+  const {column} = useColumn(columnId)
   return (
     <Draggable draggableId={column._id} index={index}>
       {(provided) => (
@@ -87,41 +80,44 @@ function Column({ column, index }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="grid grid-cols-1 grid-rows-[3em_1fr] max-h-[85vh] min-w-72 gap-y-5 m-4 group hover:bg-medium-grey/5 dark:hover:bg-dark-grey/40 transition-all duration-300 rounded p-3 cursor-grab"
+          className="group m-4 mx-3 grid min-w-80 w-fit cursor-grab grid-cols-1 grid-rows-[3em_1fr] gap-y-5 rounded p-3 transition-all duration-300 hover:bg-medium-grey/5 dark:hover:bg-dark-grey/40"
         >
           {column && (
-            <div className="w-full flex items-center justify-between">
-              <EditColumn column={column}>
-                <span className="text-medium-grey heading-s cursor-pointer">
+            <div className="flex w-full items-center justify-between">
+              <EditColumn columnId={columnId}>
+                <span className="heading-s cursor-pointer text-medium-grey">
                   {column.name} ({column?.tasks?.length})
                 </span>
               </EditColumn>
             </div>
           )}
-          <ScrollArea className="!flex !flex-col !items-start justify-start !gap-y-5 max-h-[80vh]">
+            <div className="grid h-[calc(80vh-96px)] !gap-y-5 overflow-y-auto overflow-x-hidden">
             <Droppable droppableId={column._id} type="TASK">
               {(provided) => (
                 <div
-                  className="min-h-[70vh]"
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
+                  className="h-full"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
                 >
                   {column.tasks &&
                     column.tasks.map((task, index) => (
-                      <Task key={task._id} task={task} index={index} />
+                      <TaskCard key={task._id} taskId={task._id} index={index} />
                     ))}
                   {provided.placeholder}
                 </div>
               )}
             </Droppable>
-          </ScrollArea>
+              </div>
         </div>
       )}
     </Draggable>
   );
 }
 
-function Task({ task, index }) {
+function TaskCard({ taskId, index }) {
+  const { task, totalSubtasksCompleted } = useTask(taskId)
+  const { board } = useBoard()
+
   return (
     <Draggable draggableId={task._id} index={index}>
       {(provided) => (
@@ -129,11 +125,17 @@ function Task({ task, index }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="bg-white dark:bg-dark-grey mb-5 hover:dark:bg-medium-grey/20 transition-all duration-150 
-                                cursor-pointer w-72 p-4 rounded-lg shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)]"
+          className="grid p-2 hover:dark:bg-medium-grey/20 dark:bg-dark-grey bg-white shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)] mb-5 rounded-lg transition-all duration-150"
         >
-          <h4>{task.title}</h4>
-          <p>{task.subTasks?.length} subtasks</p>
+          <Task totalSubtasksCompleted={totalSubtasksCompleted} columns={board.columns} task={task}>
+            <div className="p-2 py-4 cursor-pointer rounded-lg bg-white  transition-all duration-150 dark:bg-dark-grey  text-start">
+              <h4 className="heading-m mb-2">{task.title}</h4>
+              <p className="body-m !font-light">
+                {totalSubtasksCompleted()} of {task.subTasks?.length}{" "}
+                subtasks
+              </p>
+            </div>
+          </Task>
         </div>
       )}
     </Draggable>
@@ -141,19 +143,10 @@ function Task({ task, index }) {
 }
 
 function AddNewColumn() {
-  const { activeBoard } = useBoards();
-  const boardId = activeBoard._id;
-
-  if (!boardId) return;
-
   return (
-    <NewColumn boardId={boardId}>
-      <div
-        className="group mt-20 dark:hover:bg-dark-grey/40 flex flex-col items-center justify-center w-72 h-[70vh]
-                          hover:bg-[#AFB6B9] dark:bg-dark-grey/20 cursor-pointer transition-all duration-150 
-                          rounded-lg shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)]"
-      >
-        <span className="group-hover:scale-105 transition-all duration-300">
+    <NewColumn>
+      <div className="group mt-20 flex h-[70vh] min-w-72 cursor-pointer flex-col items-center justify-center rounded-lg shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)] transition-all duration-150 hover:bg-[#AFB6B9] dark:bg-dark-grey/20 dark:hover:bg-dark-grey/40">
+        <span className="transition-all duration-300 group-hover:scale-105">
           + Add New Column
         </span>
       </div>

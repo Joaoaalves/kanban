@@ -49,19 +49,19 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-white dark:bg-dark-grey p-8 rounded-xl max-w-[90vw] xl:min-w-96">
-      <h1 className="self-start heading-xl">Login</h1>
-      <p className="self-start body-m text-dark-lines dark:text-light-lines/50">
+    <div className="max-w-[90vw] rounded-xl bg-white p-8 dark:bg-dark-grey xl:min-w-96">
+      <h1 className="heading-xl self-start">Login</h1>
+      <p className="body-m self-start text-dark-lines dark:text-light-lines/50">
         Add your details below to get back into the app
       </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 mt-10 flex flex-col"
+          className="mt-10 flex flex-col space-y-6"
           data-testid="login-component"
         >
           {error && (
-            <span className="text-white bg-red/80 p-2 rounded-md self-center">
+            <span className="self-center rounded-md bg-red/80 p-2 text-white">
               {error}
             </span>
           )}
@@ -94,10 +94,10 @@ export default function Login() {
           </Input>
 
           <SubmitButton text={"Submit"} />
-          <p className="text-dark-gray text-xs text-center xl:text-md">
+          <p className="text-dark-gray xl:text-md text-center text-xs">
             Don’t have an account?{" "}
             <Link
-              className="text-purple cursor-pointer font-bold"
+              className="cursor-pointer font-bold text-purple"
               href="/signup"
             >
               Create account

@@ -123,9 +123,10 @@ export async function updateBoard(board) {
 
 export async function updateBoardColumns({ boardId, columns }) {
   try {
+    console.log(boardId, columns)
     await fetch(`/api/board/${boardId}`, {
       method: "PUT",
-      body: JSON.stringify({ columns }),
+      body: JSON.stringify(columns),
       headers: {
         "Content-Type": "application/json",
       },

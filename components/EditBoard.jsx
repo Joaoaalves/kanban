@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
-import { object, string } from "zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
-import { useBoards } from "@/contexts/BoardsProvider";
 import {
   Dialog,
   DialogContent,
@@ -13,17 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useBoard } from "@/contexts/BoardProvider";
 
 export default function EditBoard({ board, children, open, setOpen }) {
-  const { handleEditBoard } = useBoards();
-  const [columns, setColumns] = useState(board.columns);
-  const boardSchema = object({
-    _id: string(),
-    name: string().min(3),
-    columns: object({
-      name: string().min(3),
-    }).array(),
-  });
+  const { editBoard } = useBoard();
 
   const {
     register,
@@ -34,9 +25,10 @@ export default function EditBoard({ board, children, open, setOpen }) {
     defaultValues: {
       _id: board._id,
       name: board.name,
-      columns: columns,
+      columns: board.columns.map((col) => ({ _id: col._id || uuidv4(), name: col.name })),
     },
   });
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "columns",
@@ -51,7 +43,7 @@ export default function EditBoard({ board, children, open, setOpen }) {
   };
 
   const onSubmit = async (data) => {
-    await handleEditBoard(data);
+    await editBoard(data);
     setOpen(false);
   };
 
@@ -63,20 +55,20 @@ export default function EditBoard({ board, children, open, setOpen }) {
           <DialogTitle>Edit {board.name}</DialogTitle>
         </DialogHeader>
         <form
-          className="flex flex-col w-full gap-y-6"
+          className="flex w-full flex-col gap-y-6"
           onSubmit={handleSubmit(onSubmit)}
         >
           <fieldset>
             <label
               htmlFor="board-name"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Board Name
             </label>
             <input
               type="text"
               id="board-name"
-              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+              className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
               placeholder="e.g. Web Design"
               {...register("name", { required: true })}
             />
@@ -88,30 +80,30 @@ export default function EditBoard({ board, children, open, setOpen }) {
           <fieldset>
             <label
               htmlFor="board-columns"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Board Columns
             </label>
             {fields.map((field, index) => (
               <div
                 key={field.id}
-                className="w-full flex items-center justify-between mb-3"
+                className="mb-3 flex w-full items-center justify-between"
               >
                 <input
                   type="text"
-                  className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+                  className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
                   placeholder="e.g. Todo"
                   {...register(`columns.${index}.name`, { required: true })}
                 />
                 <button type="button" onClick={() => removeColumn(index)}>
-                  <FaTimes className="text-medium-grey hover:text-red text-lg ms-4 transition-all duration-300" />
+                  <FaTimes className="ms-4 text-lg text-medium-grey transition-all duration-300 hover:text-red" />
                 </button>
               </div>
             ))}
             <button
               type="button"
               onClick={addColumn}
-              className="py-2 rounded-full w-full bg-light-purple/10 text-purple hover:bg-purple hover:text-white dark:bg-light-bg transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-light-purple/10 py-2 font-bold text-purple transition-all duration-300 hover:bg-purple hover:text-white dark:bg-light-bg"
             >
               + Add New Column
             </button>
@@ -119,7 +111,7 @@ export default function EditBoard({ board, children, open, setOpen }) {
           <DialogFooter>
             <input
               type="submit"
-              className="py-2 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-purple py-2 font-bold text-white transition-all duration-300 hover:bg-light-purple hover:text-white"
               value={"Save Board"}
             />
           </DialogFooter>

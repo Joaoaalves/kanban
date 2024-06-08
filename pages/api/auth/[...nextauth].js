@@ -70,13 +70,20 @@ const authOptions = NextAuth({
         token.user = {
           _id: `${user._id}`,
           email: user.email,
+          name: `${user.firstName} ${user.lastName}` || null,
+          image: null
         };
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user = token.user;
+        session.userData = {
+          _id: `${token.user._id}`,
+          email: token.user.email,
+          name: `${token.user.firstName} ${token.user.lastName}` || null,
+          image: null
+        };
       }
       return session;
     },

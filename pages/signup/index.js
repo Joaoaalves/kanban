@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 export default function Home() {
   return (
     <main
-      className={`bg-light-bg dark:bg-dark-bg flex items-center justify-center h-screen ${font.className}`}
+      className={`flex h-screen items-center justify-center bg-light-bg dark:bg-dark-bg ${font.className}`}
     >
       <Signup />
       <Toaster />

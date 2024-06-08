@@ -13,43 +13,38 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") return GET(res);
   if (req.method === "POST") return POST(req, res);
-
   return res.status(405).json({ message: "Method not allowed" });
 }
 
 async function GET(res, user) {
-  // try{
-  //     await connectDB();
-  //     const boards = await Task.find({owner: user._id}).populate('columns')
-  //     return res.status(200).json({boards})
-  // }catch (error) {
-  //     console.error("Error:", error);
-  //     return res.status(500).json({ message: "Internal server error" });
-  // }
 }
 
-async function POST(req, res, user) {
+async function POST(req, res) {
   try {
     await connectDB();
 
     const { title, description, subTasks, status } = req.body;
 
     const newTask = await Task.create({ title, description, status });
+
     const createdSubTasks = await SubTask.insertMany(
-      subTasks.map((subTask) => ({ title: subTask.title, isCompleted: false })),
+      subTasks.map((subTask) => ({ title: subTask.title, isCompleted: false }))
     );
+
     newTask.subTasks = createdSubTasks.map((subTask) => subTask._id);
     await newTask.save();
+
+    await newTask.populate('subTasks');
 
     const column = await Column.findById(newTask.status);
     column.tasks = [...column.tasks, newTask._id];
     await column.save();
 
-    return res
-      .status(201)
-      .json({ message: "Task successfully created!", task: newTask });
+    return res.status(201).json({ message: "Task successfully created!", task: newTask });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
+

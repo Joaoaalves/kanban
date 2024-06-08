@@ -1,4 +1,4 @@
-import { useBoards } from "@/contexts/BoardsProvider";
+import { useBoard } from "@/contexts/BoardProvider";
 import {
   Dialog,
   DialogContent,
@@ -9,13 +9,14 @@ import {
 } from "./ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useRouter } from "next/router";
+import useBoards from "@/hooks/useBoards";
 
 export default function DeleteBoard({ children, board, open, setOpen }) {
   const router = useRouter();
-  const { handleDeleteBoard } = useBoards();
+  const {deleteBoard} = useBoards()
 
   const handleDelete = async () => {
-    handleDeleteBoard(board._id);
+    deleteBoard(board._id);
     router.push("/boards");
     setOpen(false);
   };
@@ -25,7 +26,7 @@ export default function DeleteBoard({ children, board, open, setOpen }) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
         <DialogHeader>
-          <DialogTitle className="text-red heading-l">
+          <DialogTitle className="heading-l text-red">
             Delete this board?
           </DialogTitle>
         </DialogHeader>
@@ -34,16 +35,16 @@ export default function DeleteBoard({ children, board, open, setOpen }) {
           will remove all columns and tasks and cannot be reversed.
         </DialogDescription>
         <DialogFooter>
-          <div className="w-full flex items-center justify-center gap-x-4">
+          <div className="flex w-full items-center justify-center gap-x-4">
             <button
               type="submit"
-              className="py-2 rounded-full w-full bg-red text-white hover:bg-light-red transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-red py-2 font-bold text-white transition-all duration-300 hover:bg-light-red"
               onClick={handleDelete}
             >
               Delete
             </button>
             <button
-              className="py-2 rounded-full w-full bg-light-purple/10 text-purple dark:bg-white hover:bg-purple hover:text-white transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-light-purple/10 py-2 font-bold text-purple transition-all duration-300 hover:bg-purple hover:text-white dark:bg-white"
               type="submit"
               onClick={() => setOpen(false)}
             >

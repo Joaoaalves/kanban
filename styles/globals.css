@@ -20,27 +20,27 @@ select:-webkit-autofill:focus {
 }
 
 .heading-xl {
-  @apply font-bold md:text-2xl leading-[30px] text-xl;
+  @apply text-xl font-bold leading-[30px] md:text-2xl;
 }
 
 .heading-l {
-  @apply font-bold md:text-[18px] leading-[23px] text-[14px];
+  @apply text-[14px] font-bold leading-[23px] md:text-[18px];
 }
 
 .heading-m {
-  @apply font-bold md:text-[15px] leading-[19px] text-[12px];
+  @apply text-[12px] font-bold leading-[19px] md:text-[15px];
 }
 
 .heading-s {
-  @apply font-bold md:text-xs leading-[15px] text-[10px];
+  @apply text-[10px] font-bold leading-[15px] md:text-xs;
 }
 
 .body-l {
-  @apply font-medium md:text-[13px] leading-[23px] text-xs;
+  @apply text-xs font-medium leading-[23px] md:text-[13px];
 }
 
 .body-m {
-  @apply font-bold md:text-[12px] leading-[15px] text-[10px];
+  @apply text-[10px] font-bold leading-[15px] md:text-[12px];
 }
 
 .switch span {
@@ -52,7 +52,24 @@ select:-webkit-autofill:focus {
     hue-rotate(203deg) brightness(89%) contrast(90%);
 }
 
-/* ShadCN Dialog Close Button */
 button.absolute.right-4 {
   display: none;
+}
+
+
+.custom-scroll{
+  *::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  *::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 20px 20px transparent;
+    border: solid 6px transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    box-shadow: inset 0 0 20px 20px #635fc7;
+    border: solid 6px transparent;
+  }
 }

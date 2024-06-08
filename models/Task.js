@@ -26,13 +26,13 @@ const taskSchema = new mongoose.Schema(
   },
 );
 taskSchema.pre("deleteOne", async function (next) {
-  try{
-    const task = await this.model.findOne(this.getQuery())
+  try {
+    const task = await this.model.findOne(this.getQuery());
     await SubTask.deleteMany({ _id: { $in: task.subtasks } });
-  }catch(error){
+  } catch (error) {
     next(error);
   }
-})
+});
 
 taskSchema.pre("deleteMany", async function (next) {
   this._conditionsForDeletion = this.getQuery();
@@ -41,7 +41,7 @@ taskSchema.pre("deleteMany", async function (next) {
   const subTaskIds = tasksToDelete.reduce((acc, task) => {
     return acc.concat(task.subTasks);
   }, []);
-  
+
   if (subTaskIds.length > 0) {
     await SubTask.deleteMany({ _id: { $in: subTaskIds } });
   }

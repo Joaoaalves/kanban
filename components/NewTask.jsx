@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { object, string } from "zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
-import { useBoards } from "@/contexts/BoardsProvider";
+import {useBoard} from "@/contexts/BoardProvider";
 import {
   Dialog,
   DialogContent,
@@ -13,21 +12,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-export default function NewTaskForm({ children, board }) {
-  const { getBoard, handleCreateTask } = useBoards();
+export default function NewTaskForm({ children }) {
+  const { board, newTask } = useBoard();
   const [open, setOpen] = useState(false);
   const columnIds = board ? board.columns.map((column) => column._id) : [];
-
-  const boardSchema = object({
-    title: string().min(3),
-    description: string().min(10),
-    status: string().refine((value) => columnIds.includes(value), {
-      message: "Invalid status ID",
-    }),
-    subTasks: object({
-      title: string().min(3),
-    }).array(),
-  });
+  const {createTask} = useBoard()
 
   const {
     register,
@@ -58,8 +47,8 @@ export default function NewTaskForm({ children, board }) {
   };
 
   const onSubmit = async (data) => {
-    await handleCreateTask(data, board._id);
-    reset()
+    await createTask(data);
+    reset();
     setOpen(false);
   };
 
@@ -71,20 +60,20 @@ export default function NewTaskForm({ children, board }) {
           <DialogTitle>Add New Task</DialogTitle>
         </DialogHeader>
         <form
-          className="flex flex-col w-full gap-y-6"
+          className="flex w-full flex-col gap-y-6"
           onSubmit={handleSubmit(onSubmit)}
         >
           <fieldset>
             <label
               htmlFor="task-title"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Title
             </label>
             <input
               type="text"
               id="task-title"
-              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+              className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
               placeholder="e.g. Take coffee break"
               {...register("title", { required: true })}
             />
@@ -95,14 +84,14 @@ export default function NewTaskForm({ children, board }) {
           <fieldset>
             <label
               htmlFor="task-description"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Description
             </label>
             <input
               type="text"
               id="task-description"
-              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+              className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
               placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
               {...register("description", { required: true })}
             />
@@ -114,30 +103,30 @@ export default function NewTaskForm({ children, board }) {
           <fieldset>
             <label
               htmlFor="task-subtasks"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Subtasks
             </label>
             {fields.map((field, index) => (
               <div
                 key={field.id}
-                className="w-full flex items-center justify-between mb-3"
+                className="mb-3 flex w-full items-center justify-between"
               >
                 <input
                   type="text"
-                  className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+                  className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
                   placeholder="e.g. Make coffee"
                   {...register(`subTasks.${index}.title`, { required: true })}
                 />
                 <button type="button" onClick={() => removeSubtask(index)}>
-                  <FaTimes className="text-medium-grey hover:text-red text-lg ms-4 transition-all duration-300" />
+                  <FaTimes className="ms-4 text-lg text-medium-grey transition-all duration-300 hover:text-red" />
                 </button>
               </div>
             ))}
             <button
               type="button"
               onClick={addSubtask}
-              className="py-2 rounded-full w-full bg-light-purple/10 text-purple hover:bg-purple hover:text-white dark:bg-light-bg transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-light-purple/10 py-2 font-bold text-purple transition-all duration-300 hover:bg-purple hover:text-white dark:bg-light-bg"
             >
               + Add New Subtask
             </button>
@@ -146,13 +135,13 @@ export default function NewTaskForm({ children, board }) {
           <fieldset>
             <label
               htmlFor="task-status"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Status
             </label>
             <select
               id="task-status"
-              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+              className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
               {...register("status", { required: true })}
             >
               {board &&
@@ -170,7 +159,7 @@ export default function NewTaskForm({ children, board }) {
           <DialogFooter>
             <input
               type="submit"
-              className="py-2 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-purple py-2 font-bold text-white transition-all duration-300 hover:bg-light-purple hover:text-white"
               value="Create New Task"
             />
           </DialogFooter>

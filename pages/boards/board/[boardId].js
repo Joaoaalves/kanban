@@ -2,11 +2,14 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 const font = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 import { useRouter } from "next/router";
-import { BoardsProvider } from "@/contexts/BoardsProvider";
+import { BoardProvider } from "@/contexts/BoardProvider";
 
 import Board from "@/components/Board";
-import SidePanel from "@/components/SidePanel";
+import Panel from "@/components/Panel";
 import TopBar from "@/components/TopBar";
+import { authUser } from "@/lib/clientAuth";
+
+export const getServerSideProps = async (context) => authUser(context)
 
 export default function Page() {
   const router = useRouter();
@@ -17,16 +20,13 @@ export default function Page() {
   }
 
   return (
-    <main
-      className={`bg-light-bg dark:bg-dark-bg flex items-start gap-y-8 h-screen w-screen ${font.className}`}
-    >
-      <BoardsProvider boardId={boardId}>
-        <SidePanel />
-        <div className="w-full h-screen flex flex-col">
-          <TopBar boardId={boardId} />
-          <Board boardId={boardId} />
+    <Panel>
+      <BoardProvider boardId={boardId}>
+        <div className="col-span-4 flex flex-col max-h-screen">
+          <TopBar />
+          <Board />
         </div>
-      </BoardsProvider>
-    </main>
+      </BoardProvider>
+    </Panel>
   );
 }

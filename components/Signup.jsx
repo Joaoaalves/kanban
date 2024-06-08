@@ -77,15 +77,15 @@ export default function Signup() {
   }
 
   return (
-    <div className="bg-white dark:bg-dark-grey p-8 rounded-xl max-w-[90vw] xl:min-w-96">
-      <h1 className="self-start heading-xl">Create account</h1>
-      <p className="self-start body-m text-dark-lines dark:text-light-lines/50">
+    <div className="max-w-[90vw] rounded-xl bg-white p-8 dark:bg-dark-grey xl:min-w-96">
+      <h1 className="heading-xl self-start">Create account</h1>
+      <p className="body-m self-start text-dark-lines dark:text-light-lines/50">
         Let’s get you started sharing your links!
       </p>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 mt-10 flex flex-col"
+          className="mt-10 flex flex-col space-y-6"
         >
           <Input
             type={"text"}
@@ -94,7 +94,7 @@ export default function Signup() {
             placeholder={"John"}
             control={form.control}
           >
-            <IoPersonSharp className="text-[#737373] text-sm" />
+            <IoPersonSharp className="text-sm text-[#737373]" />
           </Input>
           <Input
             type={"text"}
@@ -103,7 +103,7 @@ export default function Signup() {
             placeholder={"Doe"}
             control={form.control}
           >
-            <IoPersonSharp className="text-[#737373] text-sm" />
+            <IoPersonSharp className="text-sm text-[#737373]" />
           </Input>
           <Input
             type={"email"}
@@ -149,14 +149,14 @@ export default function Signup() {
             />
           </Input>
 
-          <p className="text-xs text-dark-gray">
+          <p className="text-dark-gray text-xs">
             Password must contain at least 8 characters
           </p>
 
           <SubmitButton text={"Submit"} />
-          <p className="text-dark-gray text-xs text-center xl:text-md">
+          <p className="text-dark-gray xl:text-md text-center text-xs">
             Already have an account?{" "}
-            <Link className="text-purple cursor-pointer font-bold" href="/">
+            <Link className="cursor-pointer font-bold text-purple" href="/">
               Login
             </Link>
           </p>

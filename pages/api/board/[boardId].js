@@ -31,12 +31,16 @@ async function GET(req, res, user) {
       path: "columns",
       populate: {
         path: "tasks",
+        populate: {
+          path: "subTasks",
+        },
       },
     });
     if (!board) return res.status(404).json({ message: "Board not found" });
 
     return res.status(200).json({ board });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -44,19 +48,37 @@ async function GET(req, res, user) {
 async function PUT(req, res, user) {
   try {
     await connectDB();
+
     const { boardId } = req.query;
     const { name, columns } = req.body;
 
-    const board = await Board.findOne({ _id: boardId, owner: user._id });
-    if (!board) return res.status(404).json({ message: "Board not found" });
+    if (columns && !Array.isArray(columns)) {
+      return res.status(400).json({ message: "Columns should be an array" });
+    }
 
-    board.columns = columns;
-    board.name = name || board.name;
+    const board = await Board.findOne({ _id: boardId, owner: user._id });
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+
+    if (name) board.name = name;
+    if (columns) board.columns = await updateColumns(columns)
+
     await board.save();
+
+    const updatedBoard = await Board.findOne({ _id: boardId, owner: user._id }).populate({
+      path: "columns",
+      populate: {
+        path: "tasks",
+        populate: {
+          path: "subTasks",
+        },
+      },
+    });
 
     return res
       .status(200)
-      .json({ message: "Board updated successfully", board });
+      .json({ message: "Board updated successfully", board: updatedBoard });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -85,4 +107,22 @@ async function DELETE(req, res, user) {
 
 async function findUser(session) {
   return await User.findOne({ email: session.user.email }, { password: 0 });
+}
+
+async function updateColumns(columns) {
+  return await Promise.all(
+    columns.map(async (column) => {
+      if (column._id) {
+        const existingColumn = await Column.findByIdAndUpdate(
+          column._id,
+          column,
+          { new: true },
+        );
+        return existingColumn._id;
+      } else {
+        const newColumn = await Column.create({ ...column, board: _id });
+        return newColumn._id;
+      }
+    }),
+  );
 }

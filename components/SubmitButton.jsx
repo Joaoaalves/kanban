@@ -3,7 +3,7 @@ export default function SubmitButton({ text }) {
     <input
       type="submit"
       value={text}
-      className="w-full bg-purple hover:bg-light-purple text-white p-2 rounded-[24px] cursor-pointer transition-all duration-300"
+      className="w-full cursor-pointer rounded-[24px] bg-purple p-2 text-white transition-all duration-300 hover:bg-light-purple"
     />
   );
 }

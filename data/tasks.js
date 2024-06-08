@@ -10,7 +10,7 @@ export async function createTask(task, boardId) {
 
     if (res.ok) {
       const data = await res.json();
-      return { task: data.task };
+      return data.task
     } else {
       console.error("Failed to add task");
     }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useBoards } from "@/contexts/BoardsProvider";
+import {useBoard} from "@/contexts/BoardProvider";
 import Image from "next/image";
 import NewTask from "./NewTask";
 import EditBoard from "./EditBoard";
@@ -7,26 +7,25 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DeleteBoard from "./DeleteBoard";
-export default function TopBar() {
-  const { activeBoard } = useBoards();
 
-  if (!activeBoard) return;
+export default function TopBar(boardId) {
+  const { board } = useBoard(boardId);
+
+  if (!board) return;
   return (
-    <div className="w-full border-b-2 light:border-light-lines dark:border-dark-lines h-24 flex items-center justify-between bg-white dark:bg-dark-grey px-6">
-      <h1 className="heading-xl">{activeBoard.name}</h1>
+    <div className="row-span-1 light:border-light-lines flex h-24 w-full items-center justify-between border-b-2 bg-white px-6 dark:border-dark-lines dark:bg-dark-grey">
+      <h1 className="heading-xl">{board.name}</h1>
 
       <div className="flex items-center justify-center gap-x-6">
-        <NewTask board={activeBoard}>
-          <button className="py-2 px-6 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold">
+        <NewTask board={board}>
+          <button className="w-full rounded-full bg-purple px-6 py-2 font-bold text-white transition-all duration-300 hover:bg-light-purple hover:text-white">
             + Add New Task
           </button>
         </NewTask>
-        <Actions board={activeBoard} />
+        <Actions board={board} />
       </div>
     </div>
   );
@@ -55,20 +54,16 @@ function Actions({ board }) {
           className="select-none"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-light-bg dark:bg-dark-grey shadow-md me-4">
-        <DropdownMenuLabel className="select-none">
-          Board Actions
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator className="!bg-light-lines dark:!bg-dark-lines" />
+      <DropdownMenuContent className="me-4 bg-light-bg shadow-md dark:bg-dark-grey">
         <DropdownMenuItem
           onClick={() => setEditOpen(!editOpen)}
-          className="hover:bg-medium-grey/10 cursor-pointer dark:hover:bg-dark-bg"
+          className="cursor-pointer hover:bg-medium-grey/10 dark:hover:bg-dark-bg"
         >
           Edit Board
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setDeleteOpen(!deleteOpen)}
-          className="hover:bg-red hover:text-white cursor-pointer text-red"
+          className="cursor-pointer text-red hover:bg-red hover:text-white"
         >
           Delete Board
         </DropdownMenuItem>

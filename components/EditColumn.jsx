@@ -9,12 +9,14 @@ import {
 } from "@/components/ui/dialog";
 import { object, string } from "zod";
 import { useForm } from "react-hook-form";
-import { useBoards } from "@/contexts/BoardsProvider";
+import useColumn from "@/hooks/useColumn";
 
-export default function NewBoardForm({ children, column }) {
+export default function NewBoardForm({ children, columnId }) {
   const [open, setOpen] = useState(false);
-  const { handleUpdateColumn } = useBoards();
-
+  const {column, editColumn} = useColumn(columnId)
+  
+  if(!column) return
+  
   const columnSchema = object({
     name: string().min(3),
   });
@@ -31,7 +33,7 @@ export default function NewBoardForm({ children, column }) {
   });
 
   const onSubmit = async (data) => {
-    await handleUpdateColumn(data);
+    await editColumn(data);
     setOpen(false);
   };
 
@@ -43,20 +45,20 @@ export default function NewBoardForm({ children, column }) {
           <DialogTitle>Edit {column.name}</DialogTitle>
         </DialogHeader>
         <form
-          className="flex flex-col w-full gap-y-6"
+          className="flex w-full flex-col gap-y-6"
           onSubmit={handleSubmit(onSubmit)}
         >
           <fieldset>
             <label
               htmlFor="column-name"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Column Name
             </label>
             <input
               type="text"
               id="column-name"
-              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+              className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
               placeholder="e.g. Web Design"
               {...register("name", { required: true })}
             />
@@ -67,7 +69,7 @@ export default function NewBoardForm({ children, column }) {
           <DialogFooter>
             <input
               type="submit"
-              className="py-2 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-purple py-2 font-bold text-white transition-all duration-300 hover:bg-light-purple hover:text-white"
               value={"Save Board"}
             />
           </DialogFooter>

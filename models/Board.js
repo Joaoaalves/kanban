@@ -24,7 +24,7 @@ const boardSchema = new mongoose.Schema(
 
 boardSchema.pre("findOneAndDelete", async function (next) {
   try {
-    const board = await this.model.findOne(this.getQuery())
+    const board = await this.model.findOne(this.getQuery());
     await Column.deleteMany({ _id: { $in: board.columns } });
     next();
   } catch (error) {

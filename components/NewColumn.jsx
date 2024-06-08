@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { object, string } from "zod";
 import { useForm } from "react-hook-form";
-import { useBoards } from "@/contexts/BoardsProvider";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +9,10 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "./ui/dialog";
+import { useBoard } from "@/contexts/BoardProvider";
 
-export default function NewBoardForm({ children, boardId }) {
-  const { handleCreateColumn } = useBoards();
+export default function NewBoardForm({ children}) {
+  const { createColumn } = useBoard();
   const [open, setOpen] = useState(false);
 
   const columnSchema = object({
@@ -31,7 +31,7 @@ export default function NewBoardForm({ children, boardId }) {
   });
 
   const onSubmit = async (data) => {
-    await handleCreateColumn(data, boardId);
+    await createColumn(data);
     reset();
     setOpen(false);
   };
@@ -44,20 +44,20 @@ export default function NewBoardForm({ children, boardId }) {
           <DialogTitle>Add New Column</DialogTitle>
         </DialogHeader>
         <form
-          className="flex flex-col w-full gap-y-6"
+          className="flex w-full flex-col gap-y-6"
           onSubmit={handleSubmit(onSubmit)}
         >
           <fieldset>
             <label
               htmlFor="column-name"
-              className="text-medium-grey text-xs font-bold dark:text-white mb-2"
+              className="mb-2 text-xs font-bold text-medium-grey dark:text-white"
             >
               Column Name
             </label>
             <input
               type="text"
               id="column-name"
-              className="w-full border-medium-grey/25 border-2 px-4 py-2 rounded bg-transparent"
+              className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
               placeholder="e.g. Web Design"
               {...register("name", { required: true })}
             />
@@ -68,7 +68,7 @@ export default function NewBoardForm({ children, boardId }) {
           <DialogFooter>
             <input
               type="submit"
-              className="py-2 rounded-full w-full bg-purple text-white hover:bg-light-purple hover:text-white transition-all duration-300 font-bold"
+              className="w-full rounded-full bg-purple py-2 font-bold text-white transition-all duration-300 hover:bg-light-purple hover:text-white"
               value={"Create New Board"}
             />
           </DialogFooter>
