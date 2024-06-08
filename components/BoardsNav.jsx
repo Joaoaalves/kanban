@@ -39,7 +39,7 @@ function BoardLink({ board, isActive }) {
   const router = useRouter();
 
   const onClick = () => {
-    return router.push(`/boards/board/${board._id}`);
+    return router.push(`/boards/${board._id}`);
   };
   return (
     <ItemNav isActive={isActive} onClick={onClick}>
