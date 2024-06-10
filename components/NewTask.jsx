@@ -139,6 +139,7 @@ export default function NewTaskForm({ children }) {
             >
               Status
             </label>
+
             <select
               id="task-status"
               className="w-full rounded border-2 border-medium-grey/25 bg-transparent px-4 py-2"
@@ -147,7 +148,7 @@ export default function NewTaskForm({ children }) {
               {board &&
                 board.columns &&
                 board.columns.map((column) => (
-                  <option value={column._id} key={`status-${column._id}`}>
+                  <option className="bg-light-bg dark:bg-dark-bg" value={column._id} key={`status-${column._id}`}>
                     {column.name}
                   </option>
                 ))}
