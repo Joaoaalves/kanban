@@ -3,6 +3,7 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
+
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [isDark, setIsDark] = useState(false);
