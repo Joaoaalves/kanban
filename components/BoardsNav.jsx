@@ -16,7 +16,7 @@ export default function BoardsNav() {
 
       <nav className="flex w-full flex-col items-start">
         {boards?.map((board) => (
-          <BoardLink key={board._id} board={board} isActive={board._id === 1} />
+          <BoardLink key={board._id} board={board} />
         ))}
         <NewBoard>
           <ItemNav className={"text-purple"}>
@@ -35,11 +35,14 @@ export default function BoardsNav() {
   );
 }
 
-function BoardLink({ board, isActive }) {
+function BoardLink({ board }) {
   const router = useRouter();
+  
+  const isActive = router.asPath.includes(board._id)
 
   const onClick = () => {
-    return router.push(`/boards/${board._id}`);
+    if(!isActive)
+      return router.push(`/boards/${board._id}`);
   };
   return (
     <ItemNav isActive={isActive} onClick={onClick}>
