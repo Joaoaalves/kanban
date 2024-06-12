@@ -13,6 +13,8 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") return GET(res);
   if (req.method === "POST") return POST(req, res);
+
+  if (req.method === "DELETE") return DELETE(req, res);
   return res.status(405).json({ message: "Method not allowed" });
 }
 
@@ -47,4 +49,20 @@ async function POST(req, res) {
   }
 }
 
+async function DELETE(req, res) {
+  try {
+    await connectDB();
 
+    const { _id } = req.body;
+
+    const deletedTask = await Task.findByIdAndDelete(_id)
+
+    if (deletedTask)
+      return res.status(200).json({ message: "Task Deleted Successfully!", task: deletedTask })
+
+    return res.status(404).json({ message: "Task not found." })
+  } catch (error) {
+    console.log("Error", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}

@@ -1,7 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { deleteTask as deleteTaskAPI } from "@/data/tasks"
 
 export default function useTask(taskId) {
     const queryClient = useQueryClient()
+
+    const { mutateAsync: deleteTask } = useMutation({
+        mutationFn: () => deleteTaskAPI(taskId),
+        onSuccess: () => queryClient.setQueryData(["task", taskId], null)
+    })
 
     const { data: task } = useQuery({
         queryFn: () => queryClient.getQueryData(["task", taskId]),
@@ -21,5 +27,5 @@ export default function useTask(taskId) {
         return subtasks.filter(sub => sub?.isCompleted).length;
     };
 
-    return { task, totalSubtasksCompleted }
+    return { task, totalSubtasksCompleted, deleteTask }
 }

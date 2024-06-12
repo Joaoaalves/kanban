@@ -117,7 +117,9 @@ function Column({ columnId, index }) {
 function TaskCard({ taskId, index }) {
   const { task, totalSubtasksCompleted } = useTask(taskId)
   const { board } = useBoard()
-
+  
+  if(!task)
+    return
   return (
     <Draggable draggableId={task._id} index={index}>
       {(provided) => (

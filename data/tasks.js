@@ -18,3 +18,21 @@ export async function createTask(task, boardId) {
     console.error(error);
   }
 }
+
+export const deleteTask = async (taskId) => {
+  try {
+    const res = await fetch("/api/task", {
+      method: "DELETE",
+      body: JSON.stringify({ _id: taskId }),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+
+    const data = await res.json()
+
+    return data?.task
+  } catch (error) {
+    console.log(error)
+  }
+}
