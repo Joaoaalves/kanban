@@ -127,7 +127,7 @@ function TaskCard({ taskId, index }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="grid p-2 hover:dark:bg-medium-grey/20 dark:bg-dark-grey bg-white shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)] mb-5 rounded-lg transition-all duration-150"
+          className="grid p-2 hover:bg-light-lines/50 hover:dark:bg-medium-grey/20 dark:bg-dark-grey bg-white shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)] mb-5 rounded-lg transition-all duration-150"
         >
           <Task totalSubtasksCompleted={totalSubtasksCompleted} columns={board.columns} task={task}>
             <div className="p-2 py-4 cursor-pointer rounded-lg bg-white  transition-all duration-150 dark:bg-dark-grey  text-start">

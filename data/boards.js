@@ -1,8 +1,9 @@
+import { GET, POST, PUT, DELETE } from "@/lib/fetchClient";
+
 export const getBoards = async () => {
   try {
-    const res = await fetch("/api/board", {
-      cache: "no-cache",
-    });
+    const res = await GET("/api/board");
+
     const data = await res.json();
 
     if (data?.boards) {
@@ -15,7 +16,8 @@ export const getBoards = async () => {
 
 export const getBoardById = async (boardId) => {
   try {
-    const res = await fetch(`/api/board/${boardId}`);
+    const res = await GET(`/api/board/${boardId}`);
+
     if (!res.ok) {
       return { error: `Error: ${res.status} ${res.statusText}` };
     }
@@ -29,13 +31,7 @@ export const getBoardById = async (boardId) => {
 
 export async function createBoard(board) {
   try {
-    const res = await fetch("/api/board", {
-      method: "POST",
-      body: JSON.stringify(board),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await POST("/api/board", board)
     const data = await res.json();
     return data.board;
   } catch (error) {
@@ -45,13 +41,7 @@ export async function createBoard(board) {
 
 export async function editBoard(board) {
   try {
-    const res = await fetch(`/api/board/${board._id}`, {
-      method: "PUT",
-      body: JSON.stringify(board),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await PUT(`/api/board/${board._id}`, board)
     const data = await res.json();
     return data.board;
   } catch (error) {
@@ -61,9 +51,8 @@ export async function editBoard(board) {
 
 export async function deleteBoard(boardId) {
   try {
-    const res = await fetch(`/api/board/${boardId}`, {
-      method: "DELETE",
-    });
+    const res = await DELETE(`/api/board/${boardId}`)
+
     const data = await res.json();
     return data.message;
   } catch (error) {
@@ -73,14 +62,7 @@ export async function deleteBoard(boardId) {
 
 export async function createColumn(column, boardId) {
   try {
-    const res = await fetch("/api/column", {
-      method: "POST",
-      body: JSON.stringify({ ...column, boardId }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
+    const res = await POST("/api/column", { ...column, boardId })
     const data = await res.json();
     return data.column;
   } catch (error) {
@@ -90,14 +72,7 @@ export async function createColumn(column, boardId) {
 
 export async function updateColumn(column) {
   try {
-    const res = await fetch("/api/column", {
-      method: "PUT",
-      body: JSON.stringify(column),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
+    const res = await PUT("/api/column", column)
     const data = await res.json();
     return data.column;
   } catch (error) {
@@ -107,13 +82,8 @@ export async function updateColumn(column) {
 
 export async function updateBoard(board) {
   try {
-    const res = await fetch(`/api/board`, {
-      method: "PUT",
-      body: JSON.stringify(board),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await PUT("/api/board", board)
+
     const data = await res.json();
     return data.board;
   } catch (error) {
@@ -123,14 +93,7 @@ export async function updateBoard(board) {
 
 export async function updateBoardColumns({ boardId, columns }) {
   try {
-    console.log(boardId, columns)
-    await fetch(`/api/board/${boardId}`, {
-      method: "PUT",
-      body: JSON.stringify(columns),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    PUT(`/api/board/${boardId}`, columns)
   } catch (error) {
     console.error("Failed to update board columns:", error);
   }

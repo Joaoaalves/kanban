@@ -4,7 +4,6 @@ import {
   getBoardById,
   editBoard as editBoardApi,
   createColumn as createColumnApi,
-  deleteBoard as deleteBoardApi,
   updateBoardColumns,
   updateColumn as updateColumnApi,
 } from "@/data/boards";

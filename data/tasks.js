@@ -1,12 +1,8 @@
+import { POST, DELETE } from "@/lib/fetchClient"
+
 export async function createTask(task, boardId) {
   try {
-    const res = await fetch("/api/task", {
-      method: "POST",
-      body: JSON.stringify(task),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await POST("/api/task", task)
 
     if (res.ok) {
       const data = await res.json();
@@ -21,13 +17,7 @@ export async function createTask(task, boardId) {
 
 export const deleteTask = async (taskId) => {
   try {
-    const res = await fetch("/api/task", {
-      method: "DELETE",
-      body: JSON.stringify({ _id: taskId }),
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
+    const res = await DELETE("/api/task", { _id: taskId })
 
     const data = await res.json()
 

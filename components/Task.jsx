@@ -21,7 +21,7 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
         <DialogHeader>
           <DialogTitle>
             <div className="flex items-center justify-between mb-6">

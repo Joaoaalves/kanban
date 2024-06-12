@@ -19,7 +19,7 @@ function SubTask({ subTaskId }) {
     const {subTask, updateSubTask} = useSubTask(subTaskId)
   return (
     <div
-      className={`flex w-full items-center justify-start gap-x-4 p-3 ${subTask.isCompleted ? "bg-light-bg dark:bg-dark-bg !line-through" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
+      className={`flex w-full items-center justify-start gap-x-4 p-3 rounded ${subTask.isCompleted ? "bg-medium-grey/10 dark:bg-dark-bg !line-through" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
     >
       <input
         type="checkbox"
