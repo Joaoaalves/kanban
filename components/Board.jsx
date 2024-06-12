@@ -1,5 +1,4 @@
 import {useBoard} from "@/contexts/BoardProvider";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import NewColumn from "@/components/NewColumn";
 import EditColumn from "@/components/EditColumn";
