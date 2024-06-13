@@ -8,6 +8,7 @@ import Board from "@/components/Board";
 import Panel from "@/components/Panel";
 import TopBar from "@/components/TopBar";
 import { authUser } from "@/lib/clientAuth";
+import { Toaster } from "@/components/ui/sonner"
 
 export const getServerSideProps = async (context) => authUser(context)
 
@@ -27,6 +28,7 @@ export default function Page() {
           <Board />
         </div>
       </BoardProvider>
+      <Toaster />
     </Panel>
   );
 }

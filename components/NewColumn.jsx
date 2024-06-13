@@ -10,7 +10,7 @@ import {
   DialogFooter,
 } from "./ui/dialog";
 import { useBoard } from "@/contexts/BoardProvider";
-
+import toast from "@/lib/toast.";
 export default function NewBoardForm({ children}) {
   const { createColumn } = useBoard();
   const [open, setOpen] = useState(false);
@@ -34,6 +34,10 @@ export default function NewBoardForm({ children}) {
     await createColumn(data);
     reset();
     setOpen(false);
+    toast({
+      title: "Column created!",
+      description: `The column "${data.name}" was created successfully.`
+    })
   };
 
   return (

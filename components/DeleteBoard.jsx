@@ -17,8 +17,8 @@ export default function DeleteBoard({ children, board, open, setOpen }) {
 
   const handleDelete = async () => {
     deleteBoard(board._id);
-    router.push("/boards");
     setOpen(false);
+    router.push("/boards");
   };
 
   return (

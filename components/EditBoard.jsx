@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
@@ -12,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useBoard } from "@/contexts/BoardProvider";
+import toast from "@/lib/toast.";
 
 export default function EditBoard({ board, children, open, setOpen }) {
   const { editBoard } = useBoard();
@@ -44,6 +44,10 @@ export default function EditBoard({ board, children, open, setOpen }) {
 
   const onSubmit = async (data) => {
     await editBoard(data);
+    toast({
+      title: "Success!",
+      description: `Board "${board.name}" was editted successfully!`
+    })
     setOpen(false);
   };
 

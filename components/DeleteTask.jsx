@@ -10,6 +10,7 @@ import {
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useRouter } from "next/router";
 import useTask from "@/hooks/useTask";
+import toast from "@/lib/toast.";
 
 export default function DeleteTask({ children, task, open, setOpen }) {
   const router = useRouter();
@@ -17,6 +18,10 @@ export default function DeleteTask({ children, task, open, setOpen }) {
 
   const handleDelete = async () => {
     await deleteTask()
+    toast({
+      title: "Task deleted!",
+      description: `The task "${task.title}" was deleted successfully.`
+    })
   };
 
   return (

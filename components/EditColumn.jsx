@@ -10,6 +10,7 @@ import {
 import { object, string } from "zod";
 import { useForm } from "react-hook-form";
 import useColumn from "@/hooks/useColumn";
+import toast from "@/lib/toast.";
 
 export default function NewBoardForm({ children, columnId }) {
   const [open, setOpen] = useState(false);
@@ -35,6 +36,10 @@ export default function NewBoardForm({ children, columnId }) {
   const onSubmit = async (data) => {
     await editColumn(data);
     setOpen(false);
+    toast({
+      title: "Changes Saved!",
+      description: `The changes to ${data.name} was saved successfully!`
+    })
   };
 
   return (

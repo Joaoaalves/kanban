@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import toast from "@/lib/toast.";
 
 export default function NewTaskForm({ children }) {
   const { board, newTask } = useBoard();
@@ -50,6 +51,10 @@ export default function NewTaskForm({ children }) {
     await createTask(data);
     reset();
     setOpen(false);
+    toast({
+      title: "Task created!",
+      description: `The task "${data.title}" was created successfully.`
+    })
   };
 
   return (
