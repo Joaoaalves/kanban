@@ -16,7 +16,7 @@ export default function TopBar(boardId) {
 
   if (!board) return;
   return (
-    <div className="row-span-1 light:border-light-lines flex h-24 w-full items-center justify-between border-b-2 bg-white px-6 dark:border-dark-lines dark:bg-dark-grey">
+    <div className="row-span-1 light:border-light-lines flex min-h-16 h-24 w-full items-center justify-between border-b-2 bg-white px-6 dark:border-dark-lines dark:bg-dark-grey">
       <h1 className="heading-xl">{board.name}</h1>
 
       <div className="flex items-center justify-center gap-x-6">
@@ -25,6 +25,7 @@ export default function TopBar(boardId) {
             + Add New Task
           </button>
         </NewTask>
+        
         <Actions board={board} />
       </div>
     </div>

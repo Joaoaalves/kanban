@@ -29,13 +29,14 @@ function SubTask({ subTaskId }) {
     }
   return (
     <div
-      className={`flex w-full items-center justify-start gap-x-4 p-3 rounded ${subTask.isCompleted ? "bg-medium-grey/10 dark:bg-dark-bg !line-through" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
+      className={`group cursor-pointer flex w-full items-center justify-start gap-x-4 p-3 rounded ${subTask.isCompleted ? "bg-medium-grey/10 dark:bg-dark-bg !line-through" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
+      onClick={handleToggleSubtask}
     >
       <input
         type="checkbox"
         name={`subTask-${subTask._id}`}
         checked={subTask.isCompleted}
-        onChange={handleToggleSubtask}
+        className={`transition-all duration-300`}
       />
       <label
         htmlFor={`subtask-${subTask._id}`}
