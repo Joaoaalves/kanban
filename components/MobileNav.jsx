@@ -42,10 +42,11 @@ export default function MobileNav() {
           width={32}
           height={32}
           className="me-4 h-8"
+          alt="Kanban Mobile Logo"
         />
       </Link>
 
-      <BoardSelect activeBoard={board} boards={boards} />
+      <BoardSelect activeBoardId={board?._id} boards={boards} />
       {board ? (
         <>
           <NewTaskButton />
@@ -61,21 +62,22 @@ export default function MobileNav() {
   );
 }
 
-function BoardSelect({ boards, activeBoard }) {
+function BoardSelect({ boards, activeBoardId }) {
   const router = useRouter();
+  
   const handleNavigate = (board) => {
     router.push(`/boards/${board}`);
   };
-
+  
   return (
-    <Select defaultValue={activeBoard?._id} onValueChange={handleNavigate}>
-      <SelectTrigger className="heading-xl w-auto gap-x-2 border-none !bg-transparent dark:text-white">
+    <Select value={activeBoardId} onValueChange={handleNavigate}>
+      <SelectTrigger className="heading-l w-auto gap-x-2 border-none !bg-transparent dark:text-white">
         <SelectValue placeholder="Your Boards" />
       </SelectTrigger>
       <SelectContent>
         {boards &&
           boards.map((board) => (
-            <SelectItem value={board._id} sel>
+            <SelectItem value={board._id} key={board._id}>
               {board.name}
             </SelectItem>
           ))}

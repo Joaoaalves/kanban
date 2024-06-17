@@ -51,7 +51,7 @@ export default function Login() {
   }
 
   return (
-    <div className="max-w-[90vw] rounded-xl bg-white p-8 dark:bg-dark-grey xl:min-w-96">
+    <div className="max-w-[90vw] rounded-xl bg-white sm:p-8 px-4 py-8 dark:bg-dark-grey w-96 xl:min-w-96">
       <h1 className="heading-xl self-start">Login</h1>
       <p className="body-m self-start text-dark-lines dark:text-light-lines/50">
         Add your details below to get back into the app
@@ -59,7 +59,7 @@ export default function Login() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="mt-10 flex flex-col space-y-6"
+          className="mt-4 sm:mt-10 flex flex-col space-y-6"
           data-testid="login-component"
         >
           {error && (
