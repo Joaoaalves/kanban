@@ -14,20 +14,20 @@ import toast from "@/lib/toast.";
 
 export default function DeleteTask({ children, task, open, setOpen }) {
   const router = useRouter();
-  const {deleteTask} = useTask(task._id)
+  const { deleteTask } = useTask(task._id);
 
   const handleDelete = async () => {
-    await deleteTask()
+    await deleteTask();
     toast({
       title: "Task deleted!",
-      description: `The task "${task.title}" was deleted successfully.`
-    })
+      description: `The task "${task.title}" was deleted successfully.`,
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle className="heading-l text-red">
             Delete this task?

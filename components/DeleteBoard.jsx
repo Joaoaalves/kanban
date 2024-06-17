@@ -13,7 +13,7 @@ import useBoards from "@/hooks/useBoards";
 
 export default function DeleteBoard({ children, board, open, setOpen }) {
   const router = useRouter();
-  const {deleteBoard} = useBoards()
+  const { deleteBoard } = useBoards();
 
   const handleDelete = async () => {
     deleteBoard(board._id);
@@ -24,7 +24,7 @@ export default function DeleteBoard({ children, board, open, setOpen }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle className="heading-l text-red">
             Delete this board?

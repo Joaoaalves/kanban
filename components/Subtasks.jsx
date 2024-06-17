@@ -17,19 +17,19 @@ export default function SubTasks({ totalSubtasksCompleted, subtasks }) {
 import toast from "@/lib/toast.";
 
 function SubTask({ subTaskId }) {
-  "use client"
-    const {subTask, updateSubTask} = useSubTask(subTaskId)
+  "use client";
+  const { subTask, updateSubTask } = useSubTask(subTaskId);
 
-    const handleToggleSubtask = () => {
-      updateSubTask(!subTask.isCompleted)
-      toast({
-        title: "Subtask updated!",
-        description: `Subtask was marked as ${!subTask.isCompleted ? '"Done"' : '"To Do"'}.`
-      })
-    }
+  const handleToggleSubtask = () => {
+    updateSubTask(!subTask.isCompleted);
+    toast({
+      title: "Subtask updated!",
+      description: `Subtask was marked as ${!subTask.isCompleted ? '"Done"' : '"To Do"'}.`,
+    });
+  };
   return (
     <div
-      className={`group cursor-pointer flex w-full items-center justify-start gap-x-4 p-3 rounded ${subTask.isCompleted ? "bg-medium-grey/10 dark:bg-dark-bg !line-through" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
+      className={`group flex w-full cursor-pointer items-center justify-start gap-x-4 rounded p-3 ${subTask.isCompleted ? "bg-medium-grey/10 !line-through dark:bg-dark-bg" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
       onClick={handleToggleSubtask}
     >
       <input

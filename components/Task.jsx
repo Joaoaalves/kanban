@@ -21,17 +21,22 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle>
-            <div className="flex items-center justify-between mb-6">
+            <div className="mb-6 flex items-center justify-between">
               {task.title}
-              <Actions task={task}/>
+              <Actions task={task} />
             </div>
           </DialogTitle>
-          <DialogDescription className="mb-6">{task.description}</DialogDescription>
+          <DialogDescription className="mb-6">
+            {task.description}
+          </DialogDescription>
         </DialogHeader>
-        <SubTasks totalSubtasksCompleted={totalSubtasksCompleted} subtasks={task.subTasks} />
+        <SubTasks
+          totalSubtasksCompleted={totalSubtasksCompleted}
+          subtasks={task.subTasks}
+        />
       </DialogContent>
     </Dialog>
   );

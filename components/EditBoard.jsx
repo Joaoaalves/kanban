@@ -25,7 +25,10 @@ export default function EditBoard({ board, children, open, setOpen }) {
     defaultValues: {
       _id: board._id,
       name: board.name,
-      columns: board.columns.map((col) => ({ _id: col._id || uuidv4(), name: col.name })),
+      columns: board.columns.map((col) => ({
+        _id: col._id || uuidv4(),
+        name: col.name,
+      })),
     },
   });
 
@@ -46,15 +49,15 @@ export default function EditBoard({ board, children, open, setOpen }) {
     await editBoard(data);
     toast({
       title: "Success!",
-      description: `Board "${board.name}" was editted successfully!`
-    })
+      description: `Board "${board.name}" was editted successfully!`,
+    });
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle>Edit {board.name}</DialogTitle>
         </DialogHeader>

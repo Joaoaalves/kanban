@@ -37,12 +37,11 @@ export default function BoardsNav() {
 
 function BoardLink({ board }) {
   const router = useRouter();
-  
-  const isActive = router.asPath.includes(board._id)
+
+  const isActive = router.asPath.includes(board._id);
 
   const onClick = () => {
-    if(!isActive)
-      return router.push(`/boards/${board._id}`);
+    if (!isActive) return router.push(`/boards/${board._id}`);
   };
   return (
     <ItemNav isActive={isActive} onClick={onClick}>

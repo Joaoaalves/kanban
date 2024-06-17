@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
-import {useBoard} from "@/contexts/BoardProvider";
+import { useBoard } from "@/contexts/BoardProvider";
 import {
   Dialog,
   DialogContent,
@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/dialog";
 import toast from "@/lib/toast.";
 
-export default function NewTaskForm({ children }) {
+export default function NewTask({ children }) {
   const { board, newTask } = useBoard();
   const [open, setOpen] = useState(false);
   const columnIds = board ? board.columns.map((column) => column._id) : [];
-  const {createTask} = useBoard()
+  const { createTask } = useBoard();
 
   const {
     register,
@@ -53,14 +53,14 @@ export default function NewTaskForm({ children }) {
     setOpen(false);
     toast({
       title: "Task created!",
-      description: `The task "${data.title}" was created successfully.`
-    })
+      description: `The task "${data.title}" was created successfully.`,
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle>Add New Task</DialogTitle>
         </DialogHeader>
@@ -153,7 +153,11 @@ export default function NewTaskForm({ children }) {
               {board &&
                 board.columns &&
                 board.columns.map((column) => (
-                  <option className="bg-light-bg dark:bg-dark-bg" value={column._id} key={`status-${column._id}`}>
+                  <option
+                    className="bg-light-bg dark:bg-dark-bg"
+                    value={column._id}
+                    key={`status-${column._id}`}
+                  >
                     {column.name}
                   </option>
                 ))}

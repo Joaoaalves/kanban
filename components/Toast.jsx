@@ -1,8 +1,8 @@
-export default function Toast({title, description}){
+export default function Toast({ title, description }) {
   return (
-    <div className="w-full h-full p-4 bg-light-bg dark:bg-dark-bg shadow-lg dark:shadow-white/10 rounded-lg text-center">
+    <div className="h-full w-full rounded-lg bg-light-bg p-4 text-center shadow-lg dark:bg-dark-bg dark:shadow-white/10">
       <h4 className="text-lg font-bold text-green-400">{title}</h4>
       <p>{description}</p>
     </div>
-  )
+  );
 }

@@ -31,7 +31,7 @@ export const getBoardById = async (boardId) => {
 
 export async function createBoard(board) {
   try {
-    const res = await POST("/api/board", board)
+    const res = await POST("/api/board", board);
     const data = await res.json();
     return data.board;
   } catch (error) {
@@ -41,7 +41,7 @@ export async function createBoard(board) {
 
 export async function editBoard(board) {
   try {
-    const res = await PUT(`/api/board/${board._id}`, board)
+    const res = await PUT(`/api/board/${board._id}`, board);
     const data = await res.json();
     return data.board;
   } catch (error) {
@@ -51,7 +51,7 @@ export async function editBoard(board) {
 
 export async function deleteBoard(boardId) {
   try {
-    const res = await DELETE(`/api/board/${boardId}`)
+    const res = await DELETE(`/api/board/${boardId}`);
 
     const data = await res.json();
     return data.message;
@@ -62,7 +62,7 @@ export async function deleteBoard(boardId) {
 
 export async function createColumn(column, boardId) {
   try {
-    const res = await POST("/api/column", { ...column, boardId })
+    const res = await POST("/api/column", { ...column, boardId });
     const data = await res.json();
     return data.column;
   } catch (error) {
@@ -72,7 +72,7 @@ export async function createColumn(column, boardId) {
 
 export async function updateColumn(column) {
   try {
-    const res = await PUT("/api/column", column)
+    const res = await PUT("/api/column", column);
     const data = await res.json();
     return data.column;
   } catch (error) {
@@ -82,7 +82,7 @@ export async function updateColumn(column) {
 
 export async function updateBoard(board) {
   try {
-    const res = await PUT("/api/board", board)
+    const res = await PUT("/api/board", board);
 
     const data = await res.json();
     return data.board;
@@ -93,7 +93,7 @@ export async function updateBoard(board) {
 
 export async function updateBoardColumns({ boardId, columns }) {
   try {
-    PUT(`/api/board/${boardId}`, columns)
+    PUT(`/api/board/${boardId}`, columns);
   } catch (error) {
     console.error("Failed to update board columns:", error);
   }

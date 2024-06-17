@@ -18,8 +18,7 @@ export default async function handler(req, res) {
   return res.status(405).json({ message: "Method not allowed" });
 }
 
-async function GET(res, user) {
-}
+async function GET(res, user) {}
 
 async function POST(req, res) {
   try {
@@ -30,19 +29,21 @@ async function POST(req, res) {
     const newTask = await Task.create({ title, description, status });
 
     const createdSubTasks = await SubTask.insertMany(
-      subTasks.map((subTask) => ({ title: subTask.title, isCompleted: false }))
+      subTasks.map((subTask) => ({ title: subTask.title, isCompleted: false })),
     );
 
     newTask.subTasks = createdSubTasks.map((subTask) => subTask._id);
     await newTask.save();
 
-    await newTask.populate('subTasks');
+    await newTask.populate("subTasks");
 
     const column = await Column.findById(newTask.status);
     column.tasks = [...column.tasks, newTask._id];
     await column.save();
 
-    return res.status(201).json({ message: "Task successfully created!", task: newTask });
+    return res
+      .status(201)
+      .json({ message: "Task successfully created!", task: newTask });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -55,12 +56,14 @@ async function DELETE(req, res) {
 
     const { _id } = req.body;
 
-    const deletedTask = await Task.findByIdAndDelete(_id)
+    const deletedTask = await Task.findByIdAndDelete(_id);
 
     if (deletedTask)
-      return res.status(200).json({ message: "Task Deleted Successfully!", task: deletedTask })
+      return res
+        .status(200)
+        .json({ message: "Task Deleted Successfully!", task: deletedTask });
 
-    return res.status(404).json({ message: "Task not found." })
+    return res.status(404).json({ message: "Task not found." });
   } catch (error) {
     console.log("Error", error);
     return res.status(500).json({ message: "Internal server error" });

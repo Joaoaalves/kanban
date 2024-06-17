@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useBoard} from "@/contexts/BoardProvider";
+import { useBoard } from "@/contexts/BoardProvider";
 import Image from "next/image";
 import NewTask from "./NewTask";
 import EditBoard from "./EditBoard";
@@ -16,7 +16,7 @@ export default function TopBar(boardId) {
 
   if (!board) return;
   return (
-    <div className="row-span-1 light:border-light-lines flex min-h-16 h-24 w-full items-center justify-between border-b-2 bg-white px-6 dark:border-dark-lines dark:bg-dark-grey">
+    <div className="light:border-light-lines row-span-1 hidden h-24 min-h-16 w-full items-center justify-between border-b-2 bg-white px-6 dark:border-dark-lines dark:bg-dark-grey sm:flex">
       <h1 className="heading-xl">{board.name}</h1>
 
       <div className="flex items-center justify-center gap-x-6">
@@ -25,7 +25,7 @@ export default function TopBar(boardId) {
             + Add New Task
           </button>
         </NewTask>
-        
+
         <Actions board={board} />
       </div>
     </div>

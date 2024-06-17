@@ -11,7 +11,7 @@ import {
 } from "./ui/dialog";
 import { useBoard } from "@/contexts/BoardProvider";
 import toast from "@/lib/toast.";
-export default function NewBoardForm({ children}) {
+export default function NewBoardForm({ children }) {
   const { createColumn } = useBoard();
   const [open, setOpen] = useState(false);
 
@@ -36,14 +36,14 @@ export default function NewBoardForm({ children}) {
     setOpen(false);
     toast({
       title: "Column created!",
-      description: `The column "${data.name}" was created successfully.`
-    })
+      description: `The column "${data.name}" was created successfully.`,
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle>Add New Column</DialogTitle>
         </DialogHeader>
