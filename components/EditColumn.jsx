@@ -11,7 +11,7 @@ import { object, string } from "zod";
 import { useForm } from "react-hook-form";
 import useColumn from "@/hooks/useColumn";
 
-export default function NewBoardForm({ children, columnId }) {
+export default function EditColumn({ children, columnId }) {
   const [open, setOpen] = useState(false);
   const {column, editColumn} = useColumn(columnId)
   

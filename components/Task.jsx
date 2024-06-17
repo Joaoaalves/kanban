@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SubTasks from "./Subtasks";
 import Image from "next/image";
+import EditTask from "./EditTask"
 
 export default function Task({ totalSubtasksCompleted, task, children }) {
   return (
@@ -25,7 +26,7 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
           <DialogTitle>
             <div className="flex items-center justify-between mb-6">
               {task.title}
-              <Actions />
+              <Actions task={task}/>
             </div>
           </DialogTitle>
           <DialogDescription className="mb-6">{task.description}</DialogDescription>
@@ -36,16 +37,16 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
   );
 }
 
-function Actions({ Task }) {
+function Actions({ task }) {
   "use client";
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   if (editOpen)
-    return <EditTask Task={Task} open={editOpen} setOpen={setEditOpen} />;
+    return <EditTask task={task} open={editOpen} setOpen={setEditOpen} />;
 
   if (deleteOpen)
-    return <DeleteTask Task={Task} open={deleteOpen} setOpen={setDeleteOpen} />;
+    return <DeleteTask task={task} open={deleteOpen} setOpen={setDeleteOpen} />;
 
   return (
     <DropdownMenu>

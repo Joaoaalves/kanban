@@ -9,6 +9,7 @@ import {
   updateColumn as updateColumnApi,
 } from "@/data/boards";
 import { createTask as createTaskApi } from "@/data/tasks";
+import { editTask as editTaskApi } from "@/data/tasks";
 
 export const BoardContext = createContext();
 
@@ -123,7 +124,14 @@ export const BoardProvider = ({ children, boardId }) => {
         newTask.subTasks.forEach(sub => queryClient.setQueryData(["subTask", sub._id], sub));
       },
     });
-  
+    
+    const {mutateAsync: editTask} = useMutation({
+      mutationFn: async (task) => await editTaskApi(task),
+      onSuccess: (task) => {
+        console.log(task._id)
+        queryClient.setQueryData(["task", task._id], task)
+      }
+    })
     const handleMoveTask = (source, destination) => moveTask(source, destination, queryClient);
     const handleMoveColumn = (source, destination) => moveColumn(source, destination, board._id, queryClient);
   
@@ -135,7 +143,8 @@ export const BoardProvider = ({ children, boardId }) => {
           createColumn,
           handleMoveTask,
           handleMoveColumn,
-          createTask
+          createTask,
+          editTask
         }}
       >
         {children}
