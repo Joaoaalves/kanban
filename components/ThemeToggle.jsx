@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { Switch } from "@/components/ui/switch";
@@ -10,16 +10,16 @@ export default function ThemeToggle() {
 
   const toggleDarkMode = () => {
     setTheme(theme === "dark" ? "light" : "dark");
-    setIsDark(!isDark)
+    setIsDark(!isDark);
   };
 
   useEffect(() => {
-    if(theme){
-      setIsDark(theme === "dark")
+    if (theme) {
+      setIsDark(theme === "dark");
     }
-  }, [])
+  }, []);
 
-  return (  
+  return (
     <div className="mt-auto flex items-center justify-center gap-x-6 rounded-md bg-light-bg px-8 py-[14px] dark:bg-dark-bg lg:px-16">
       <Image
         width={20}

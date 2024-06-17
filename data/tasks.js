@@ -1,16 +1,12 @@
+import { POST, DELETE } from "@/lib/fetchClient";
+
 export async function createTask(task, boardId) {
   try {
-    const res = await fetch("/api/task", {
-      method: "POST",
-      body: JSON.stringify(task),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await POST("/api/task", task);
 
     if (res.ok) {
       const data = await res.json();
-      return data.task
+      return data.task;
     } else {
       console.error("Failed to add task");
     }
@@ -39,3 +35,15 @@ export async function editTask(task) {
     console.log(error);
   }
 }
+
+export const deleteTask = async (taskId) => {
+  try {
+    const res = await DELETE("/api/task", { _id: taskId });
+
+    const data = await res.json();
+
+    return data?.task;
+  } catch (error) {
+    console.log(error);
+  }
+};

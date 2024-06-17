@@ -18,7 +18,8 @@ export default async function handler(req, res) {
   return res.status(405).json({ message: "Method not allowed" });
 }
 
-
+async function GET(res, user) {
+}
 
 async function POST(req, res) {
   try {
@@ -29,19 +30,21 @@ async function POST(req, res) {
     const newTask = await Task.create({ title, description, status });
 
     const createdSubTasks = await SubTask.insertMany(
-      subTasks.map((subTask) => ({ title: subTask.title, isCompleted: false }))
+      subTasks.map((subTask) => ({ title: subTask.title, isCompleted: false })),
     );
 
     newTask.subTasks = createdSubTasks.map((subTask) => subTask._id);
     await newTask.save();
 
-    await newTask.populate('subTasks');
+    await newTask.populate("subTasks");
 
     const column = await Column.findById(newTask.status);
     column.tasks = [...column.tasks, newTask._id];
     await column.save();
 
-    return res.status(201).json({ message: "Task successfully created!", task: newTask });
+    return res
+      .status(201)
+      .json({ message: "Task successfully created!", task: newTask });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -49,39 +52,3 @@ async function POST(req, res) {
 }
 
 
-async function PUT(req, res) {
-  try {
-    await connectDB();
-
-    const { _id, title, description, status, subTasks } = req.body;
-
-    var task = await Task.findById(_id)
-
-    task.title = title
-    task.description = description
-    task.status = status
-
-    task.subTasks = await Promise.all(
-      subTasks.map(async (sub) => {
-        if (sub._id) {
-          const existingSubTask = await SubTask.findByIdAndUpdate(
-            sub._id,
-            sub,
-            { new: true },
-          );
-          return existingSubTask._id;
-        } else {
-          const newColumn = await SubTask.create({ ...sub, board: _id });
-          return newColumn._id;
-        }
-      })
-    )
-    await task.save();
-    await task.populate("subTasks");
-
-    return res.status(200).json({ message: 'Task updated successfully!', task })
-  } catch (error) {
-    console.log("Error:", error);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-}

@@ -25,6 +25,7 @@ const taskSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
 taskSchema.pre("deleteOne", async function (next) {
   try {
     const task = await this.model.findOne(this.getQuery());

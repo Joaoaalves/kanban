@@ -26,7 +26,7 @@ const formSchema = z.object({
 
 export default function Login() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(
     router?.query?.error ? "Check your credentials." : "",
   );
@@ -37,7 +37,7 @@ export default function Login() {
 
   async function onSubmit(values) {
     const { email, password } = values;
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const res = await signIn("credentials", {
         email,
@@ -47,7 +47,7 @@ export default function Login() {
     } catch (error) {
       console.error("Sign-in error:", error);
     }
-    setIsLoading(false)
+    setIsLoading(false);
   }
 
   return (
@@ -95,7 +95,7 @@ export default function Login() {
             />
           </Input>
 
-          <SubmitButton text={"Submit"} disabled={isLoading}/>
+          <SubmitButton text={"Submit"} disabled={isLoading} />
           <p className="text-dark-gray xl:text-md text-center text-xs">
             Don’t have an account?{" "}
             <Link

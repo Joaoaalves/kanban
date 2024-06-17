@@ -62,11 +62,14 @@ async function PUT(req, res, user) {
     }
 
     if (name) board.name = name;
-    if (columns) board.columns = await updateColumns(columns)
+    if (columns) board.columns = await updateColumns(columns);
 
     await board.save();
 
-    const updatedBoard = await Board.findOne({ _id: boardId, owner: user._id }).populate({
+    const updatedBoard = await Board.findOne({
+      _id: boardId,
+      owner: user._id,
+    }).populate({
       path: "columns",
       populate: {
         path: "tasks",

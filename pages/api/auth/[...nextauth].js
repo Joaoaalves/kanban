@@ -71,7 +71,7 @@ const authOptions = NextAuth({
           _id: `${user._id}`,
           email: user.email,
           name: `${user.firstName} ${user.lastName}` || null,
-          image: null
+          image: null,
         };
       }
       return token;
@@ -82,7 +82,7 @@ const authOptions = NextAuth({
           _id: `${token.user._id}`,
           email: token.user.email,
           name: `${token.user.firstName} ${token.user.lastName}` || null,
-          image: null
+          image: null,
         };
       }
       return session;

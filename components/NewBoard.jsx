@@ -14,17 +14,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+import toast from "@/lib/toast.";
+
 export default function NewBoard({ children }) {
-  const {newBoard} = useBoards()
+  const { newBoard } = useBoards();
   const [open, setOpen] = useState(false);
   const [columns, setColumns] = useState([{ id: uuidv4(), name: "" }]);
-
-  const boardSchema = object({
-    name: string().min(3),
-    columns: object({
-      name: string().min(3),
-    }).array(),
-  });
 
   const {
     register,
@@ -54,13 +49,17 @@ export default function NewBoard({ children }) {
   const onSubmit = async (data) => {
     await newBoard(data);
     reset();
+    toast({
+      title: "Board created!",
+      description: `The board "${data.name}" was created successfully.`,
+    });
     setOpen(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle>Create New Board</DialogTitle>
         </DialogHeader>

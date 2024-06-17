@@ -10,13 +10,14 @@ import {
 import { object, string } from "zod";
 import { useForm } from "react-hook-form";
 import useColumn from "@/hooks/useColumn";
+import toast from "@/lib/toast.";
 
 export default function EditColumn({ children, columnId }) {
   const [open, setOpen] = useState(false);
-  const {column, editColumn} = useColumn(columnId)
-  
-  if(!column) return
-  
+  const { column, editColumn } = useColumn(columnId);
+
+  if (!column) return;
+
   const columnSchema = object({
     name: string().min(3),
   });
@@ -35,12 +36,16 @@ export default function EditColumn({ children, columnId }) {
   const onSubmit = async (data) => {
     await editColumn(data);
     setOpen(false);
+    toast({
+      title: "Changes Saved!",
+      description: `The changes to ${data.name} was saved successfully!`,
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="!bg-light-bg dark:!bg-dark-grey">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle>Edit {column.name}</DialogTitle>
         </DialogHeader>

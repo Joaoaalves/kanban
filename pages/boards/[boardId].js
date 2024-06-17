@@ -8,8 +8,9 @@ import Board from "@/components/Board";
 import Panel from "@/components/Panel";
 import TopBar from "@/components/TopBar";
 import { authUser } from "@/lib/clientAuth";
+import { Toaster } from "@/components/ui/sonner";
 
-export const getServerSideProps = async (context) => authUser(context)
+export const getServerSideProps = async (context) => authUser(context);
 
 export default function Page() {
   const router = useRouter();
@@ -20,13 +21,14 @@ export default function Page() {
   }
 
   return (
-    <Panel>
-      <BoardProvider boardId={boardId}>
-        <div className="col-span-4 flex flex-col max-h-screen">
+    <BoardProvider boardId={boardId}>
+      <Panel>
+        <div className="col-span-4 flex max-h-screen flex-col">
           <TopBar />
           <Board />
         </div>
-      </BoardProvider>
-    </Panel>
+        <Toaster />
+      </Panel>
+    </BoardProvider>
   );
 }
