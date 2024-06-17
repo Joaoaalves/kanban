@@ -4,7 +4,6 @@ import Task from "@/models/Task";
 import SubTask from "@/models/SubTask";
 import { getServerSession } from "next-auth/next";
 import authOptions from "./auth/[...nextauth]";
-import User from "@/models/User";
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions);
@@ -16,9 +15,6 @@ export default async function handler(req, res) {
   if (req.method === "DELETE") return DELETE(req, res);
 
   return res.status(405).json({ message: "Method not allowed" });
-}
-
-async function GET(res, user) {
 }
 
 async function POST(req, res) {
@@ -52,3 +48,59 @@ async function POST(req, res) {
 }
 
 
+async function PUT(req, res) {
+  try {
+    await connectDB();
+
+    const { _id, title, description, status, subTasks } = req.body;
+
+    var task = await Task.findById(_id)
+
+    task.title = title
+    task.description = description
+    task.status = status
+
+    task.subTasks = await Promise.all(
+      subTasks.map(async (sub) => {
+        if (sub._id) {
+          const existingSubTask = await SubTask.findByIdAndUpdate(
+            sub._id,
+            sub,
+            { new: true },
+          );
+          return existingSubTask._id;
+        } else {
+          const newColumn = await SubTask.create({ ...sub, board: _id });
+          return newColumn._id;
+        }
+      })
+    )
+    await task.save();
+    await task.populate("subTasks");
+
+    return res.status(200).json({ message: 'Task updated successfully!', task })
+  } catch (error) {
+    console.log("Error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function DELETE(req, res) {
+  try {
+    await connectDB();
+
+    const { _id } = req.body;
+
+    const deletedTask = await Task.findByIdAndDelete(_id);
+
+    if (deletedTask)
+      return res
+        .status(200)
+        .json({ message: "Task Deleted Successfully!", task: deletedTask });
+
+    return res.status(404).json({ message: "Task not found." });
+  } catch (error) {
+    console.log("Error", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}

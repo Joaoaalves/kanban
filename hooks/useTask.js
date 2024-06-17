@@ -15,17 +15,8 @@ export default function useTask(taskId) {
     enabled: !!taskId,
   });
 
-  const subtasks =
-    task?.subTasks.map((sub) => {
-      return useQuery({
-        queryKey: ["subTask", sub._id],
-        queryFn: () => queryClient.getQueryData(["subTask", sub._id]),
-        enabled: !!sub._id,
-      }).data;
-    }) || [];
-
   const totalSubtasksCompleted = () => {
-    return subtasks.filter((sub) => sub?.isCompleted).length;
+    return task?.subTasks.filter((sub) => queryClient.getQueryData(["subTask", sub._id])).length || 0;
   };
 
   return { task, totalSubtasksCompleted, deleteTask };

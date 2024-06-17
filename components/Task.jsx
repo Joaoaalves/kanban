@@ -27,10 +27,10 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
           <DialogTitle>
             <div className="mb-6 flex items-center justify-between">
               {task.title}
-              <Actions />
+              <Actions task={task}/>
             </div>
           </DialogTitle>
-          <DialogDescription className="mb-6">
+          <DialogDescription className="mb-6 text-start">
             {task.description}
           </DialogDescription>
         </DialogHeader>

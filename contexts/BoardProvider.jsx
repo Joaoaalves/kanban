@@ -147,7 +147,6 @@ export const BoardProvider = ({ children, boardId }) => {
     const {mutateAsync: editTask} = useMutation({
       mutationFn: async (task) => await editTaskApi(task),
       onSuccess: (task) => {
-        console.log(task._id)
         queryClient.setQueryData(["task", task._id], task)
       }
     })
@@ -163,7 +162,8 @@ export const BoardProvider = ({ children, boardId }) => {
           createColumn,
           handleMoveTask,
           handleMoveColumn,
-          createTask
+          createTask,
+          editTask
         }}
       >
         {children}

@@ -9,13 +9,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 export default function EditTask({ task, open, setOpen }) {
   const { board, editTask } = useBoard();
   const columnIds = board ? board.columns.map((column) => column._id) : [];
-  const {createTask} = useBoard()
 
   const {
     register,
