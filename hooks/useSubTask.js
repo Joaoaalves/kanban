@@ -11,13 +11,10 @@ export default function useSubTask(subTaskId) {
   });
 
   const { mutateAsync: updateSubTask } = useMutation({
-    mutationFn: async (isCompleted) => {
-      const updatedSubtask = await updateSubTaskApi({ subTaskId, isCompleted });
-      return { updatedSubtask };
-    },
-    onSuccess: ({ updatedSubtask, subTaskId }) => {
-      console.log(updatedSubtask);
+    mutationFn: async (isCompleted) => await updateSubTaskApi({ subTaskId, isCompleted }),
+    onSuccess: (updatedSubtask) => {
       queryClient.setQueryData(["subTask", updatedSubtask._id], updatedSubtask);
+      queryClient.invalidateQueries(["task"]);
     },
   });
 

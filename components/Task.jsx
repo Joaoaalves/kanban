@@ -22,7 +22,7 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
+      <DialogContent className="max-w-[80vw] md:max-w-[600px] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
         <DialogHeader>
           <DialogTitle>
             <div className="mb-6 flex items-center justify-between">
