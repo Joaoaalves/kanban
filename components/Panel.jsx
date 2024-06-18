@@ -20,7 +20,7 @@ export default function Panel({ children }) {
 
   return (
     <div
-      className={`max-w-screen flex min-h-screen grid-rows-1 flex-col items-start items-center gap-y-8 overflow-y-hidden bg-light-bg dark:bg-dark-bg sm:grid sm:items-start ${font.className}`}
+      className={`max-w-screen flex min-h-screen grid-rows-1 flex-col items-start items-center sm:gap-y-8 overflow-y-hidden bg-light-bg dark:bg-dark-bg sm:grid sm:items-start ${font.className}`}
       style={{
         gridTemplateColumns: isOpen ? "repeat(5, 1fr)" : "repeat(4, 1fr)",
       }}
