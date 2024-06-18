@@ -47,18 +47,17 @@ async function POST(req, res) {
   }
 }
 
-
 async function PUT(req, res) {
   try {
     await connectDB();
 
     const { _id, title, description, status, subTasks } = req.body;
 
-    var task = await Task.findById(_id)
+    var task = await Task.findById(_id);
 
-    task.title = title
-    task.description = description
-    task.status = status
+    task.title = title;
+    task.description = description;
+    task.status = status;
 
     task.subTasks = await Promise.all(
       subTasks.map(async (sub) => {
@@ -73,12 +72,14 @@ async function PUT(req, res) {
           const newColumn = await SubTask.create({ ...sub, board: _id });
           return newColumn._id;
         }
-      })
-    )
+      }),
+    );
     await task.save();
     await task.populate("subTasks");
 
-    return res.status(200).json({ message: 'Task updated successfully!', task })
+    return res
+      .status(200)
+      .json({ message: "Task updated successfully!", task });
   } catch (error) {
     console.log("Error:", error);
     return res.status(500).json({ message: "Internal server error" });

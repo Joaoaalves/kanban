@@ -5,7 +5,7 @@ import {
   FormLabel,
   FormField,
   FormItem,
-  TextArea as ShadCNTextArea
+  TextArea as ShadCNTextArea,
 } from "./ui/form";
 
 export default function TextArea({

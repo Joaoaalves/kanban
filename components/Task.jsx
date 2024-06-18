@@ -15,19 +15,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SubTasks from "./Subtasks";
 import Image from "next/image";
-import EditTask from "./EditTask"
+import EditTask from "./EditTask";
 import DeleteTask from "./DeleteTask";
 
 export default function Task({ totalSubtasksCompleted, task, children }) {
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="max-w-[80vw] md:max-w-[600px] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6 md:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>
             <div className="mb-6 flex items-center justify-between">
               {task.title}
-              <Actions task={task}/>
+              <Actions task={task} />
             </div>
           </DialogTitle>
           <DialogDescription className="mb-6 text-start">

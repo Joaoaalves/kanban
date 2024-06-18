@@ -59,7 +59,7 @@ export default function NewBoard({ children }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[80vw] md:max-w-[600px] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6">
+      <DialogContent className="max-w-[80vw] rounded-lg !bg-light-bg px-4 dark:!bg-dark-grey sm:px-6 md:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Create New Board</DialogTitle>
         </DialogHeader>

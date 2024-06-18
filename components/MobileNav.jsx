@@ -64,11 +64,11 @@ export default function MobileNav() {
 
 function BoardSelect({ boards, activeBoardId }) {
   const router = useRouter();
-  
+
   const handleNavigate = (board) => {
     router.push(`/boards/${board}`);
   };
-  
+
   return (
     <Select value={activeBoardId} onValueChange={handleNavigate}>
       <SelectTrigger className="heading-l w-auto gap-x-2 border-none !bg-transparent dark:text-white">

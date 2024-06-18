@@ -36,12 +36,10 @@ async function PUT(req, res) {
       return res.status(404).json({ message: "SubTask not found" });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: "SubTask successfully updated!",
-        subTask: updatedSubTask,
-      });
+    return res.status(200).json({
+      message: "SubTask successfully updated!",
+      subTask: updatedSubTask,
+    });
   } catch (err) {
     console.error("Error:", err);
     return res.status(500).json({ message: "Internal server error" });

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaTimes } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
-import {useBoard} from "@/contexts/BoardProvider";
+import { useBoard } from "@/contexts/BoardProvider";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +26,7 @@ export default function EditTask({ task, open, setOpen }) {
       title: task.title,
       description: task.description,
       status: columnIds.length > 0 ? columnIds[0] : "",
-      subTasks: task.subTasks.map(sub => ({...sub}))
+      subTasks: task.subTasks.map((sub) => ({ ...sub })),
     },
   });
 
@@ -45,8 +45,8 @@ export default function EditTask({ task, open, setOpen }) {
 
   const onSubmit = async (data) => {
     await editTask({
-        _id: task._id,
-        ...data
+      _id: task._id,
+      ...data,
     });
     reset();
     setOpen(false);
@@ -147,7 +147,11 @@ export default function EditTask({ task, open, setOpen }) {
               {board &&
                 board.columns &&
                 board.columns.map((column) => (
-                  <option className="bg-light-bg dark:bg-dark-bg" value={column._id} key={`status-${column._id}`}>
+                  <option
+                    className="bg-light-bg dark:bg-dark-bg"
+                    value={column._id}
+                    key={`status-${column._id}`}
+                  >
                     {column.name}
                   </option>
                 ))}

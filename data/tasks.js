@@ -23,13 +23,13 @@ export async function editTask(task) {
       headers: {
         "Content-Type": "application/json",
       },
-    })
+    });
 
     if (res.ok) {
       const data = await res.json();
-      return data.task
+      return data.task;
     } else {
-      console.log(error("Failed to add task"))
+      console.log(error("Failed to add task"));
     }
   } catch (error) {
     console.log(error);

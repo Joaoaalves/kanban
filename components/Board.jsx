@@ -61,7 +61,7 @@ export default function Board() {
 
 function EmptyBoard() {
   return (
-    <section className="flex h-[calc(100vh-64px)] sm:h-[calc(80vh-96px)] w-screen flex-col items-center justify-center gap-y-8 px-8 text-center sm:w-full">
+    <section className="flex h-[calc(100vh-64px)] w-screen flex-col items-center justify-center gap-y-8 px-8 text-center sm:h-[calc(80vh-96px)] sm:w-full">
       <p>This board is empty. Create a new column to get started.</p>
       <NewColumn>
         <span className="w-48 cursor-pointer rounded-full bg-purple px-4 py-2 font-bold text-white transition-all duration-300 hover:bg-light-purple hover:text-white">
@@ -86,13 +86,13 @@ function Column({ columnId, index }) {
           {column && (
             <div className="flex w-full items-center justify-between">
               <EditColumn columnId={columnId}>
-                <span className="heading-s cursor-pointer text-medium-grey select-none">
+                <span className="heading-s cursor-pointer select-none text-medium-grey">
                   {column.name} ({column?.tasks?.length})
                 </span>
               </EditColumn>
             </div>
           )}
-          <div className="grid h-[calc(100vh-232px)] sm:h-[calc(80vh-96px)] !gap-y-5 overflow-y-auto overflow-x-hidden">
+          <div className="grid h-[calc(100vh-232px)] !gap-y-5 overflow-y-auto overflow-x-hidden sm:h-[calc(80vh-96px)]">
             <Droppable droppableId={column._id} type="TASK">
               {(provided) => (
                 <div
@@ -131,7 +131,7 @@ function TaskCard({ taskId, index }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="mb-5 grid rounded-lg bg-white p-3 sm:p-2 shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)] transition-all duration-150 hover:bg-light-lines/50 dark:bg-dark-grey hover:dark:bg-medium-grey/20"
+          className="mb-5 grid rounded-lg bg-white p-3 shadow-[0px_4px_6px_0px_rgba(54,78,126,0.101)] transition-all duration-150 hover:bg-light-lines/50 dark:bg-dark-grey hover:dark:bg-medium-grey/20 sm:p-2"
         >
           <Task
             totalSubtasksCompleted={totalSubtasksCompleted}
@@ -140,7 +140,7 @@ function TaskCard({ taskId, index }) {
           >
             <div className="cursor-pointer rounded-lg bg-white p-2 py-4 text-start transition-all duration-150 dark:bg-dark-grey">
               <h4 className="heading-m mb-2 select-none">{task.title}</h4>
-              <p className="body-m !font-light select-none">
+              <p className="body-m select-none !font-light">
                 {totalSubtasksCompleted()} of {task.subTasks?.length} subtasks
               </p>
             </div>

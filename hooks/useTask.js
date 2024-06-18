@@ -17,7 +17,9 @@ export default function useTask(taskId) {
 
   const totalSubtasksCompleted = () => {
     return (
-      task?.subTasks.filter((sub) => queryClient.getQueryData(["subTask", sub._id])?.isCompleted).length || 0
+      task?.subTasks.filter(
+        (sub) => queryClient.getQueryData(["subTask", sub._id])?.isCompleted,
+      ).length || 0
     );
   };
 
