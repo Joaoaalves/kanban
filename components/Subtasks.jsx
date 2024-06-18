@@ -24,7 +24,7 @@ function SubTask({ subTaskId }) {
     updateSubTask(!subTask.isCompleted);
     toast({
       title: "Subtask updated!",
-      description: `Subtask was marked as ${!subTask.isCompleted ? '"Done"' : '"To Do"'}.`,
+      description: `Subtask was marked as ${!subTask?.isCompleted ? '"Done"' : '"To Do"'}.`,
     });
   };
   return (
