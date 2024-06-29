@@ -74,6 +74,7 @@ async function PUT(req, res) {
         }
       }),
     );
+
     await task.save();
     await task.populate("subTasks");
 

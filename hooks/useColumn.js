@@ -1,5 +1,4 @@
 import { updateColumn } from "@/data/boards";
-import { createTask } from "@/data/tasks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function useColumn(columnId) {

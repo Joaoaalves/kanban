@@ -36,7 +36,7 @@ export default function Board() {
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                className="custom-scroll max-w-full overflow-x-auto"
+                className="custom-scroll scroll-snap-x max-w-full overflow-x-auto"
               >
                 <div className="flex max-w-full items-start justify-start p-4 sm:p-6">
                   {board.columns.map((column, index) => (
@@ -81,7 +81,7 @@ function Column({ columnId, index }) {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="group m-4 mx-3 grid w-fit min-w-72 cursor-grab grid-cols-1 grid-rows-[3em_1fr] gap-y-5 rounded p-3 transition-all duration-300 hover:bg-medium-grey/5 dark:hover:bg-dark-grey/40 sm:min-w-80"
+          className="group m-4 mx-3 grid w-fit min-w-72 cursor-grab snap-start grid-cols-1 grid-rows-[3em_1fr] gap-y-5 rounded p-3 transition-all duration-300 hover:bg-medium-grey/5 dark:hover:bg-dark-grey/40 sm:min-w-80"
         >
           {column && (
             <div className="flex w-full items-center justify-between">

@@ -7,18 +7,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import SubTasks from "./Subtasks";
 import Image from "next/image";
 import EditTask from "./EditTask";
 import DeleteTask from "./DeleteTask";
+import { useBoard } from "@/contexts/BoardProvider";
+import useColumn from "@/hooks/useColumn";
 
 export default function Task({ totalSubtasksCompleted, task, children }) {
+
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
@@ -38,9 +51,44 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
           totalSubtasksCompleted={totalSubtasksCompleted}
           subtasks={task.subTasks}
         />
+      <StatusSelector task={task}/>
+
       </DialogContent>
     </Dialog>
   );
+}
+
+function StatusSelector({task}){
+  const {board, handleMoveTaskById} = useBoard()
+
+  const handleStatusUpdate = async (newStatus) => {
+    await handleMoveTaskById(task._id, task.status, newStatus)
+  }
+
+
+  return (
+    <div className="mt-6">
+      <label htmlFor="status" className="font-bold" >Current Status</label>
+      <Select onValueChange={handleStatusUpdate} name="status" value={task.status} id="status">
+        <SelectTrigger className="mt-2 w-full gap-x-2 !border-purple !bg-transparent dark:text-white px-4 py-2 body-l">
+          <SelectValue placeholder="Current Status" />
+        </SelectTrigger>
+        <SelectContent>
+          {board &&
+            board.columns.map((col) => {
+              const {column} = useColumn(col._id)
+
+              return (
+                <SelectItem value={column._id} key={column._id}>
+                  {column.name}
+                </SelectItem>
+              )
+
+            })}
+        </SelectContent>
+      </Select>
+    </div>
+  )
 }
 
 function Actions({ task }) {

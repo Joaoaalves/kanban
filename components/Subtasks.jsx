@@ -29,7 +29,7 @@ function SubTask({ subTaskId }) {
   };
   return (
     <div
-      className={`group flex w-full cursor-pointer items-center justify-start gap-x-4 rounded p-3 ${subTask.isCompleted ? "bg-medium-grey/10 !line-through dark:bg-dark-bg" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
+      className={`group flex w-full cursor-pointer items-center justify-start gap-x-4 rounded p-3 ${subTask?.isCompleted ? "bg-medium-grey/10 !line-through dark:bg-dark-bg" : "bg-[#d8d7f1] dark:bg-[#39395b]"}`}
       onClick={handleToggleSubtask}
     >
       <input

@@ -12,9 +12,7 @@ import {
 } from "@/components/ui/dialog";
 
 export default function EditTask({ task, open, setOpen }) {
-  const { board, editTask } = useBoard();
-  const columnIds = board ? board.columns.map((column) => column._id) : [];
-
+  const { board, editTask, handleMoveTaskById } = useBoard();
   const {
     register,
     handleSubmit,
@@ -25,7 +23,7 @@ export default function EditTask({ task, open, setOpen }) {
     defaultValues: {
       title: task.title,
       description: task.description,
-      status: columnIds.length > 0 ? columnIds[0] : "",
+      status: task.status,
       subTasks: task.subTasks.map((sub) => ({ ...sub })),
     },
   });
@@ -44,6 +42,8 @@ export default function EditTask({ task, open, setOpen }) {
   };
 
   const onSubmit = async (data) => {
+    if(data.status !== task.status)
+      await handleMoveTaskById(task._id, task.status, data.status)
     await editTask({
       _id: task._id,
       ...data,
