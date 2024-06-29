@@ -12,7 +12,6 @@ const useUpdateSubTask = (queryClient) => {
       queryClient.setQueryData(
         ["activeBoard", "665c8621bdc9ec86cf06dcd1"],
         (oldBoard) => {
-          console.log(oldBoard);
           return {
             ...oldBoard,
             columns: oldBoard.columns.map((col) => {
@@ -23,7 +22,6 @@ const useUpdateSubTask = (queryClient) => {
                     ...task,
                     subTasks: task.subTask.map((sub) => {
                       if (sub._id === subTaskId) {
-                        console.log("Achou o subtask para atualizar");
                         return updateSubTask;
                       }
                       return sub;

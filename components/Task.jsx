@@ -66,7 +66,7 @@ function StatusSelector({task}){
   }
 
   const columns = board ? getColumns() : [];
-  console.log(columns)
+  
   return (
     <div className="mt-6">
       <label htmlFor="status" className="font-bold" >Current Status</label>
