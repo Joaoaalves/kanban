@@ -201,6 +201,16 @@ export const BoardProvider = ({ children, boardId }) => {
     moveColumn(source, destination, board._id, queryClient);
   const handleMoveTaskById = (taskId, sourceColumnId, destinationColumnId) => moveTaskById(taskId, sourceColumnId, destinationColumnId, queryClient)
 
+  const getColumns = () => {
+    const colTuples = queryClient.getQueriesData({
+      queryKey: ["column"]
+    });
+    const boardColumnIds = board?.columns?.map(col => col._id) || [];
+
+    return colTuples
+      .flatMap(([_, colData]) => colData)
+      .filter(col => boardColumnIds.includes(col._id));
+  };
 
   return (
     <BoardContext.Provider
@@ -212,7 +222,8 @@ export const BoardProvider = ({ children, boardId }) => {
         handleMoveTaskById,
         handleMoveColumn,
         createTask,
-        editTask
+        editTask,
+        getColumns
       }}
     >
       {children}

@@ -59,14 +59,14 @@ export default function Task({ totalSubtasksCompleted, task, children }) {
 }
 
 function StatusSelector({task}){
-  const {board, handleMoveTaskById} = useBoard()
+  const {board, handleMoveTaskById, getColumns} = useBoard()
 
   const handleStatusUpdate = async (newStatus) => {
     await handleMoveTaskById(task._id, task.status, newStatus)
   }
 
-  const columns = board ? board.columns.map((col) => useColumn(col._id)) : [];
-
+  const columns = board ? getColumns() : [];
+  console.log(columns)
   return (
     <div className="mt-6">
       <label htmlFor="status" className="font-bold" >Current Status</label>
@@ -75,7 +75,7 @@ function StatusSelector({task}){
           <SelectValue placeholder="Current Status" />
         </SelectTrigger>
         <SelectContent>
-          {columns && columns.map(({column}) => (
+          {columns && columns.map((column) => (
                 <SelectItem value={column._id} key={column._id}>
                   {column.name}
                 </SelectItem>
