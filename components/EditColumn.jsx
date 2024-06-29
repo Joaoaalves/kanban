@@ -16,20 +16,14 @@ export default function EditColumn({ children, columnId }) {
   const [open, setOpen] = useState(false);
   const { column, editColumn } = useColumn(columnId);
 
-  if (!column) return;
-
-  const columnSchema = object({
-    name: string().min(3),
-  });
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      _id: column._id,
-      name: column.name,
+      _id: column?._id,
+      name: column?.name,
     },
   });
 
@@ -42,6 +36,7 @@ export default function EditColumn({ children, columnId }) {
     });
   };
 
+  if (!column) return;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>

@@ -201,6 +201,7 @@ export const BoardProvider = ({ children, boardId }) => {
     moveColumn(source, destination, board._id, queryClient);
   const handleMoveTaskById = (taskId, sourceColumnId, destinationColumnId) => moveTaskById(taskId, sourceColumnId, destinationColumnId, queryClient)
 
+
   return (
     <BoardContext.Provider
       value={{
@@ -212,6 +213,7 @@ export const BoardProvider = ({ children, boardId }) => {
         handleMoveColumn,
         createTask,
         editTask,
+        getColumns
       }}
     >
       {children}
