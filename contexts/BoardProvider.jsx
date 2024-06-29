@@ -212,8 +212,7 @@ export const BoardProvider = ({ children, boardId }) => {
         handleMoveTaskById,
         handleMoveColumn,
         createTask,
-        editTask,
-        getColumns
+        editTask
       }}
     >
       {children}

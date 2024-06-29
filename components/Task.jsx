@@ -65,6 +65,7 @@ function StatusSelector({task}){
     await handleMoveTaskById(task._id, task.status, newStatus)
   }
 
+  const columns = board ? board.columns.map((col) => useColumn(col._id)) : [];
 
   return (
     <div className="mt-6">
@@ -74,17 +75,12 @@ function StatusSelector({task}){
           <SelectValue placeholder="Current Status" />
         </SelectTrigger>
         <SelectContent>
-          {board &&
-            board.columns.map((col) => {
-              const {column} = useColumn(col._id)
-
-              return (
+          {columns && columns.map(({column}) => (
                 <SelectItem value={column._id} key={column._id}>
                   {column.name}
                 </SelectItem>
               )
-
-            })}
+            )}
         </SelectContent>
       </Select>
     </div>
